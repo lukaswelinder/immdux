@@ -1,0 +1,33 @@
+{
+  "name": "@immdux/core",
+  "version": "0.0.0",
+  "description": "advanced state management",
+  "keywords": ["redux", "flux", "state", "store", "immutable", "observable", "RxJS"],
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Lukas Welinder <lukas@welinder.co>",
+  "repository": "https://github.com/lithic-io/immdux/tree/master/packages/core",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "build": "run-p build:dist build:docs",
+    "build:dist": "rimraf dist && rollup -c rollup.config.ts",
+    "build:docs": "rimraf docs && typedoc --options ./typedoc.js ./src",
+    "start": "rollup -c rollup.config.ts -w",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "peerDependencies": {
+    "immutable": "^4.0.0-rc.12",
+    "rxjs": "^6.2.1"
+  }
+}

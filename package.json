@@ -1,0 +1,106 @@
+{
+  "name": "immdux",
+  "private": true,
+  "license": "MIT",
+  "author": "Lukas Welinder <lukas@welinder.co>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lithic-io/immdux.git"
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run --parallel build",
+    "build:dist": "lerna run --parallel build:dist",
+    "build:docs": "lerna run --parallel build:docs",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "precommit": "lint-staged",
+    "postcommit": "git update-index -g",
+    "commitmsg": "commitlint -E GIT_PARAMS"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
+    "@types/jest": "^23.3.10",
+    "@types/node": "^10.12.11",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "casual": "^1.6.2",
+    "cross-env": "^5.0.1",
+    "eslint": "^6.6.0",
+    "husky": "^0.14.0",
+    "immutable": "^4.0.0-rc.12",
+    "jest": "^24.9.0",
+    "json-size": "^1.0.0",
+    "lerna": "^3.18.4",
+    "lint-staged": "^7.0.0",
+    "lodash.camelcase": "^4.3.0",
+    "npm-run-all": "^4.1.3",
+    "prettier": "^1.19.1",
+    "prompt": "^1.0.0",
+    "redux": "^4.0.1",
+    "redux-promise-middleware": "^5.1.1",
+    "rimraf": "^2.6.1",
+    "rollup": "^0.58.0",
+    "rollup-plugin-commonjs": "^9.0.0",
+    "rollup-plugin-filesize": "^2.0.0",
+    "rollup-plugin-json": "^3.0.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-terser": "^1.0.1",
+    "rollup-plugin-typescript2": "^0.11.1",
+    "rxjs": "^6.2.1",
+    "ts-jest": "^24.1.0",
+    "ts-node": "^7.0.1",
+    "typedoc": "^0.15.0",
+    "typedoc-plugin-markdown": "^2.1.3",
+    "typedoc-plugin-no-inherit": "^1.1.10",
+    "typescript": "^3.6.4"
+  },
+  "lint-staged": {
+    "./**/*.{js,jsx,ts,tsx,css,scss}": [
+      "prettier --write --ignore-path ./.gitignore",
+      "git add"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "always"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*\\.(test|spec))\\.(ts|tsx|js|jsx)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "packages/*/src/**/*.{ts,tsx}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/__tests__/",
+      "/dist/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    }
+  }
+}

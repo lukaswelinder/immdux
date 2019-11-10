@@ -1,0 +1,16 @@
+module.exports = {
+  mode: 'file',
+  target: 'ES6',
+  out: './docs',
+  entryPoint: './src/index.ts',
+  readme: 'none',
+  exclude: ['./**/*.test.ts', './node_modules/**/*'],
+  excludeExternals: true,
+  excludeNotExported: true,
+  excludePrivate: true,
+  excludeProtected: true,
+  hideGenerator: true,
+  mdHideSources: true,
+  theme: 'markdown',
+  mdEngine: 'github',
+};

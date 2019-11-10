@@ -1,0 +1,95 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "@typescript-eslint/tslint"
+  ],
+  "rules": {
+    "@typescript-eslint/class-name-casing": "error",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/member-delimiter-style": [
+      "off",
+      "error",
+      {
+        "multiline": {
+          "delimiter": "none",
+          "requireLast": true
+        },
+        "singleline": {
+          "delimiter": "semi",
+          "requireLast": false
+        }
+      }
+    ],
+    "@typescript-eslint/no-param-reassign": "off",
+    "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/quotes": "off",
+    "@typescript-eslint/semi": [
+      "off",
+      null
+    ],
+    "@typescript-eslint/space-within-parens": [
+      "off",
+      "never"
+    ],
+    "@typescript-eslint/type-annotation-spacing": "off",
+    "arrow-parens": [
+      "off",
+      "as-needed"
+    ],
+    "camelcase": "off",
+    "capitalized-comments": "error",
+    "curly": "off",
+    "eol-last": "off",
+    "eqeqeq": [
+      "error",
+      "smart"
+    ],
+    "id-blacklist": "off",
+    "id-match": "off",
+    "linebreak-style": "off",
+    "max-len": "off",
+    "new-parens": "off",
+    "newline-per-chained-call": "off",
+    "no-duplicate-imports": "error",
+    "no-eval": "error",
+    "no-extra-semi": "off",
+    "no-irregular-whitespace": "off",
+    "no-multiple-empty-lines": "off",
+    "no-new-wrappers": "error",
+    "no-trailing-spaces": "off",
+    "no-underscore-dangle": "off",
+    "no-var": "error",
+    "object-shorthand": "error",
+    "one-var": [
+      "error",
+      "never"
+    ],
+    "prefer-const": "error",
+    "prefer-template": "error",
+    "quote-props": "off",
+    "radix": "error",
+    "space-before-function-paren": "off",
+    "spaced-comment": "error",
+    "@typescript-eslint/tslint/config": [
+      "error",
+      {
+        "rules": {
+          "no-boolean-literal-compare": true,
+          "no-else-after-return": true,
+          "no-function-constructor-with-string-args": true,
+          "prefer-array-literal": true,
+          "ter-prefer-arrow-callback": true
+        }
+      }
+    ]
+  }
+}
