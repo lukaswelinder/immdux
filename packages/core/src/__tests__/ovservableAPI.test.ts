@@ -9,6 +9,8 @@ import {
   registerMiddleware,
   removeMiddleware,
   store,
+  ActionObservable,
+  StateObservable,
   action$,
   state$,
   dispatch,
@@ -24,6 +26,79 @@ const mockState1 = fromJS({
 
 
 describe('observable API', () => {
+  describe('ActionObservable', () => {
+    it('will not emit actions until connected', () => {
+      setState(mockState1);
+      const mockSubscriber = jest.fn();
+      const myAction$ = new ActionObservable();
+      const s = myAction$.subscribe(mockSubscriber);
+      dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
+      expect(mockSubscriber).toHaveBeenCalledTimes(0);
+      myAction$.connect();
+      dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
+      expect(mockSubscriber).toHaveBeenCalledTimes(1);
+      s.unsubscribe();
+    });
+
+    it('supports filtering by one or more strings', () => {
+      setState(mockState1);
+      const mockSubscriber1 = jest.fn();
+      const mockSubscriber2 = jest.fn();
+      const test1Action$ = new ActionObservable('TEST_1');
+      const test2Action$ = new ActionObservable('TEST_1', 'TEST_2');
+      const s1 = test1Action$.subscribe(mockSubscriber1);
+      const s2 = test2Action$.subscribe(mockSubscriber2);
+      test1Action$.connect();
+      test2Action$.connect();
+      dispatch({ type: 'TEST_1', payload: 'hello world' });
+      dispatch({ type: 'TEST_2', payload: 'hello world' });
+      dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
+      expect(mockSubscriber1).toHaveBeenCalledTimes(1);
+      expect(mockSubscriber2).toHaveBeenCalledTimes(2);
+      s1.unsubscribe();
+      s2.unsubscribe();
+    });
+
+    it('supports filtering by one or more regex patterns', () => {
+      setState(mockState1);
+      const mockSubscriber1 = jest.fn();
+      const mockSubscriber2 = jest.fn();
+      const test1Action$ = new ActionObservable(/.+_1/);
+      const test2Action$ = new ActionObservable(/.+_\d/, /.+_ACTION/);
+      const s1 = test1Action$.subscribe(mockSubscriber1);
+      const s2 = test2Action$.subscribe(mockSubscriber2);
+      test1Action$.connect();
+      test2Action$.connect();
+      dispatch({ type: 'TEST_1', payload: 'hello world' });
+      dispatch({ type: 'TEST_2', payload: 'hello world' });
+      dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
+      expect(mockSubscriber1).toHaveBeenCalledTimes(1);
+      expect(mockSubscriber2).toHaveBeenCalledTimes(3);
+      s1.unsubscribe();
+      s2.unsubscribe();
+    });
+
+    it('supports filtering by one or more regex patterns and/or strings', () => {
+      setState(mockState1);
+      const mockSubscriber1 = jest.fn();
+      const mockSubscriber2 = jest.fn();
+      const test1Action$ = new ActionObservable(/.+_1/);
+      const test2Action$ = new ActionObservable(/.+_\d/, 'TEST_ACTION');
+      const s1 = test1Action$.subscribe(mockSubscriber1);
+      const s2 = test2Action$.subscribe(mockSubscriber2);
+      test1Action$.connect();
+      test2Action$.connect();
+      dispatch({ type: 'TEST_1', payload: 'hello world' });
+      dispatch({ type: 'TEST_2', payload: 'hello world' });
+      dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
+      expect(mockSubscriber1).toHaveBeenCalledTimes(1);
+      console.log(mockSubscriber2.mock.calls);
+      expect(mockSubscriber2).toHaveBeenCalledTimes(3);
+      s1.unsubscribe();
+      s2.unsubscribe();
+    });
+  });
+
   describe('action$', () => {
     it('emits any action dispatched after subscribing', () => {
       setState(mockState1);
