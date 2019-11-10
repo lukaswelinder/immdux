@@ -5,15 +5,23 @@ jobs:
       - image: circleci/node
     steps:
       - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
       - run:
-          name: install
-          command: |
-            yarn install
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
       - run:
-          name: test
+          name: Run Tests
           command: |
             yarn test
       - run:
-          name: build
+          name: Run Build
           command: |
             yarn run build
