@@ -34,10 +34,11 @@ describe('observable API', () => {
       const s = myAction$.subscribe(mockSubscriber);
       dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
       expect(mockSubscriber).toHaveBeenCalledTimes(0);
-      myAction$.connect();
+      const c = myAction$.connect();
       dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
       expect(mockSubscriber).toHaveBeenCalledTimes(1);
       s.unsubscribe();
+      c.unsubscribe();
     });
 
     it('supports filtering by one or more strings', () => {
@@ -48,8 +49,8 @@ describe('observable API', () => {
       const test2Action$ = new ActionObservable('TEST_1', 'TEST_2');
       const s1 = test1Action$.subscribe(mockSubscriber1);
       const s2 = test2Action$.subscribe(mockSubscriber2);
-      test1Action$.connect();
-      test2Action$.connect();
+      const c1 = test1Action$.connect();
+      const c2 = test2Action$.connect();
       dispatch({ type: 'TEST_1', payload: 'hello world' });
       dispatch({ type: 'TEST_2', payload: 'hello world' });
       dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
@@ -57,6 +58,8 @@ describe('observable API', () => {
       expect(mockSubscriber2).toHaveBeenCalledTimes(2);
       s1.unsubscribe();
       s2.unsubscribe();
+      c1.unsubscribe();
+      c2.unsubscribe();
     });
 
     it('supports filtering by one or more regex patterns', () => {
@@ -67,8 +70,8 @@ describe('observable API', () => {
       const test2Action$ = new ActionObservable(/.+_\d/, /.+_ACTION/);
       const s1 = test1Action$.subscribe(mockSubscriber1);
       const s2 = test2Action$.subscribe(mockSubscriber2);
-      test1Action$.connect();
-      test2Action$.connect();
+      const c1 = test1Action$.connect();
+      const c2 = test2Action$.connect();
       dispatch({ type: 'TEST_1', payload: 'hello world' });
       dispatch({ type: 'TEST_2', payload: 'hello world' });
       dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
@@ -76,6 +79,8 @@ describe('observable API', () => {
       expect(mockSubscriber2).toHaveBeenCalledTimes(3);
       s1.unsubscribe();
       s2.unsubscribe();
+      c1.unsubscribe();
+      c2.unsubscribe();
     });
 
     it('supports filtering by one or more regex patterns and/or strings', () => {
@@ -86,16 +91,17 @@ describe('observable API', () => {
       const test2Action$ = new ActionObservable(/.+_\d/, 'TEST_ACTION');
       const s1 = test1Action$.subscribe(mockSubscriber1);
       const s2 = test2Action$.subscribe(mockSubscriber2);
-      test1Action$.connect();
-      test2Action$.connect();
+      const c1 = test1Action$.connect();
+      const c2 = test2Action$.connect();
       dispatch({ type: 'TEST_1', payload: 'hello world' });
       dispatch({ type: 'TEST_2', payload: 'hello world' });
       dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
       expect(mockSubscriber1).toHaveBeenCalledTimes(1);
-      console.log(mockSubscriber2.mock.calls);
       expect(mockSubscriber2).toHaveBeenCalledTimes(3);
       s1.unsubscribe();
       s2.unsubscribe();
+      c1.unsubscribe();
+      c2.unsubscribe();
     });
   });
 
