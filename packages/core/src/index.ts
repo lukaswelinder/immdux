@@ -10,6 +10,6 @@ export { dispatch, setState } from './handlers/store';
 export { REGISTER_REDUCER, REMOVE_REDUCER, SET_STATE } from './actions/actionTypes';
 
 export { IterableKeyPath, PrimitiveKeyPath, KeyPath } from './types';
-
+// test 123
 // TODO: register global to track multiple instances
 // TODO: centralize error messaging by error code to cut payload size
