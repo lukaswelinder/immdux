@@ -2,7 +2,7 @@
 
 Immutable, observable, dynamic state engine compatible with the redux ecosystem.
 
-build: [![CircleCI](https://circleci.com/gh/lithic-io/immdux.svg?style=svg)](https://circleci.com/gh/lithic-io/immdux)
+build: [![CircleCI](https://circleci.com/gh/lithic-io/immdux.svg?style=svg)](https://circleci.com/gh/lithic-io/immdux) [![codecov](https://codecov.io/gh/lithic-io/immdux/branch/master/graph/badge.svg)](https://codecov.io/gh/lithic-io/immdux)
 
 ## Contents
 
