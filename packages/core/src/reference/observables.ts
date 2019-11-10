@@ -56,6 +56,7 @@ function ofType<A extends AnyAction = AnyAction>(types: (string | RegExp)[]) {
     });
   }
   return filter<A>((action) => {
+    if (typeMap.hasOwnProperty(action.type)) return true;
     for (let i = 0; i < regExpArr.length; i++) {
       if (regExpArr[i].test(action.type)) return true;
     }
