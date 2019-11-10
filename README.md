@@ -1,8 +1,17 @@
-# immdux
+<h1 align="center">Immdux</h1>
 
-Immutable, observable, dynamic state engine compatible with the redux ecosystem.
+<p align="center>
+  Immutable, observable, dynamic state engine compatible with the redux ecosystem.
+</p>
 
-build: [![CircleCI](https://circleci.com/gh/lithic-io/immdux.svg?style=svg)](https://circleci.com/gh/lithic-io/immdux) [![codecov](https://codecov.io/gh/lithic-io/immdux/branch/master/graph/badge.svg)](https://codecov.io/gh/lithic-io/immdux)
+<p align="center>
+  <a href="https://circleci.com/gh/lithic-io/immdux" target="_blank">
+    <img alt="CircleCI Status" src="https://circleci.com/gh/lithic-io/immdux.svg?style=svg">
+  </a>
+  <a href="https://codecov.io/gh/lithic-io/immdux" target="_blank">
+    <img alt="Coverage Status" src="https://codecov.io/gh/lithic-io/immdux/branch/master/graph/badge.svg">
+  </a>
+</p>
 
 ## Contents
 
