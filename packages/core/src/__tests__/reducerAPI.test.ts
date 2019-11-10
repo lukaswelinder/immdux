@@ -22,14 +22,12 @@ const mockState1 = fromJS({
   r2: { nested: { testing: 'reducer_nested' }, second: { testing: 2 } },
 });
 
-// TODO: split up tests into reducers/observable/middleware
-
-describe('immdux', () => {
+describe('reducer API', () => {
   describe('registerReducer', () => {
     it(
       'mounts `reducer` to correct `keyPath` in store' +
-        ' and initialize w/ `REGISTER_REDUCER` action containing' +
-        ' `keyPath` and `reducer` in the action payload',
+      ' and initialize w/ `REGISTER_REDUCER` action containing' +
+      ' `keyPath` and `reducer` in the action payload',
       () => {
         setState(mockState1);
         const mockKeyPath = ['r2', 'nested'];
@@ -68,7 +66,7 @@ describe('immdux', () => {
     });
     it(
       'uses the default state for `reducer` if state is not already' +
-        ' defined at the given `keyPath`',
+      ' defined at the given `keyPath`',
       () => {
         setState(mockState1);
         const mockDefaultReducerState = fromJS({ example: 'testing' });
@@ -139,59 +137,6 @@ describe('immdux', () => {
       };
       registerReducer(mockKeyPath, mockReducer);
       removeReducer(mockKeyPath);
-    });
-  });
-  describe('observables', () => {
-    describe('action$', () => {
-      it('emits any action dispatched after subscribing', () => {
-        setState(mockState1);
-        const mockSubscriber1 = jest.fn();
-        const mockSubscriber2 = jest.fn();
-        const s1 = action$.subscribe(mockSubscriber1);
-        const s2 = action$.pipe(filter((a) => a.type !== 'TEST_ACTION')).subscribe(mockSubscriber2);
-        dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
-        expect(mockSubscriber1).toHaveBeenCalledTimes(1);
-        expect(mockSubscriber2).toHaveBeenCalledTimes(0);
-        s1.unsubscribe();
-        s2.unsubscribe();
-      });
-    });
-    describe('state$', () => {
-      it('emits state when changes occur', () => {
-        setState(mockState1);
-        const mockSubscriber = jest.fn();
-        registerReducer(['r1'], (state, action) => {
-          if (action.type === 'CHANGE') {
-            return state.set('newProp', 'some_value');
-          }
-          return state;
-        });
-        const s = state$.subscribe(mockSubscriber);
-        dispatch({ type: 'CHANGE' });
-        expect(mockSubscriber).toHaveBeenCalledTimes(2);
-        s.unsubscribe();
-      });
-    });
-  });
-  // TODO: expand middleware test cases
-  describe('middleware', () => {
-    it('should work', () => {
-      setState(mockState1);
-      const middleware = promiseMiddleware({
-        promiseTypeSuffixes: ['REQUEST', 'SUCCESS', 'FAILURE'],
-      });
-      let middlewareInnerMock = jest.fn();
-      const middlewareOuterMock = jest.fn((api) => {
-        middlewareInnerMock = jest.fn(middleware(api));
-        return middlewareInnerMock;
-      });
-      registerMiddleware(middlewareOuterMock);
-      expect(middlewareOuterMock).toHaveBeenCalledTimes(1);
-      dispatch({ type: 'TEST' });
-      expect(middlewareInnerMock).toHaveBeenCalledTimes(1);
-      removeMiddleware(middlewareOuterMock);
-      dispatch({ type: 'TEST' });
-      expect(middlewareInnerMock).toHaveBeenCalledTimes(1);
     });
   });
 });
