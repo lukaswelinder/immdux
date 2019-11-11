@@ -28,7 +28,7 @@
 
 • **dispatch**: *D*
 
-*Defined in [types/index.ts:70](https://github.com/lukaswelinder/immdux/blob/1b2329f/packages/core/src/types/index.ts#L70)*
+*Defined in [types/index.ts:70](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L70)*
 
 ## Methods
 
@@ -36,6 +36,6 @@
 
 ▸ **getState**(): *S*
 
-*Defined in [types/index.ts:69](https://github.com/lukaswelinder/immdux/blob/1b2329f/packages/core/src/types/index.ts#L69)*
+*Defined in [types/index.ts:69](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L69)*
 
 **Returns:** *S*

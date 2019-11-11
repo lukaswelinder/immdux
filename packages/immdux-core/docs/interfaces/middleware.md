@@ -18,7 +18,7 @@
 
 ▸ (`api`: [MiddlewareAPI](middlewareapi.md)‹D, S›): *function*
 
-*Defined in [types/index.ts:73](https://github.com/lukaswelinder/immdux/blob/1b2329f/packages/core/src/types/index.ts#L73)*
+*Defined in [types/index.ts:73](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L73)*
 
 **Parameters:**
 

@@ -27,4 +27,4 @@ for actions, extend this interface.
 
 • **type**: *T*
 
-*Defined in [types/index.ts:51](https://github.com/lukaswelinder/immdux/blob/1b2329f/packages/core/src/types/index.ts#L51)*
+*Defined in [types/index.ts:51](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L51)*
