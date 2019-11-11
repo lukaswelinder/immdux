@@ -11,5 +11,7 @@ export { REGISTER_REDUCER, REMOVE_REDUCER, SET_STATE } from './actions/actionTyp
 
 export { IterableKeyPath, PrimitiveKeyPath, KeyPath } from './types';
 
+// test codecov
+
 // TODO: register global to track multiple instances
 // TODO: centralize error messaging by error code to cut payload size
