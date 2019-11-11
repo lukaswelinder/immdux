@@ -1,7 +1,7 @@
 {
   "name": "@immdux/core",
   "version": "0.0.0",
-  "description": "advanced state management",
+  "description": "Immutable, observable, dynamic state engine compatible with the redux ecosystem.",
   "keywords": ["redux", "flux", "state", "store", "immutable", "observable", "RxJS"],
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
@@ -24,7 +24,8 @@
     "build:docs": "rimraf docs && typedoc --options ./typedoc.js ./src",
     "start": "rollup -c rollup.config.ts -w",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "prepublish": "build"
   },
   "peerDependencies": {
     "immutable": "^4.0.0-rc.12",
