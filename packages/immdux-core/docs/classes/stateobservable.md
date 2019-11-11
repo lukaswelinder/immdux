@@ -48,7 +48,7 @@ Type for state being observed, defaults to `any`.
 
 *Overrides void*
 
-*Defined in [reference/observables.ts:148](https://github.com/lukaswelinder/immdux/blob/1b2329f/packages/core/src/reference/observables.ts#L148)*
+*Defined in [reference/observables.ts:149](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/reference/observables.ts#L149)*
 
 **Parameters:**
 
@@ -64,7 +64,7 @@ Name | Type | Default |
 
 • **path**: *ReadonlyArray‹any›*
 
-*Defined in [reference/observables.ts:203](https://github.com/lukaswelinder/immdux/blob/1b2329f/packages/core/src/reference/observables.ts#L203)*
+*Defined in [reference/observables.ts:204](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/reference/observables.ts#L204)*
 
 Observed path in state.
 
@@ -74,7 +74,7 @@ ___
 
 • **value**: *S*
 
-*Defined in [reference/observables.ts:210](https://github.com/lukaswelinder/immdux/blob/1b2329f/packages/core/src/reference/observables.ts#L210)*
+*Defined in [reference/observables.ts:211](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/reference/observables.ts#L211)*
 
 Current state at [`path`](#path). This value is set synchronously after reducers
 have executed, before the next value is emitted.

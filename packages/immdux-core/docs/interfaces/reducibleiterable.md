@@ -51,7 +51,7 @@ ___
 
 ▸ **reduce**<**R**>(`reducer`: function, `initialReduction?`: R, `context?`: any): *R*
 
-*Defined in [types/index.ts:12](https://github.com/lukaswelinder/immdux/blob/1b2329f/packages/core/src/types/index.ts#L12)*
+*Defined in [types/index.ts:12](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L12)*
 
 **Type parameters:**
 

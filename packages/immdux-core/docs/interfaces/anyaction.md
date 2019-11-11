@@ -40,4 +40,4 @@ to bother with defining those properties.
 
 *Inherited from [Action](action.md).[type](action.md#type)*
 
-*Defined in [types/index.ts:51](https://github.com/lukaswelinder/immdux/blob/1b2329f/packages/core/src/types/index.ts#L51)*
+*Defined in [types/index.ts:51](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L51)*

@@ -71,7 +71,7 @@ a single place to toggle multiple observables.
 
 *Overrides void*
 
-*Defined in [reference/observables.ts:110](https://github.com/lukaswelinder/immdux/blob/1b2329f/packages/core/src/reference/observables.ts#L110)*
+*Defined in [reference/observables.ts:111](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/reference/observables.ts#L111)*
 
 **Parameters:**
 
