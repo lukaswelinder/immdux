@@ -4,4 +4,4 @@ Core state engine.
 
 ## Contents
 
-* [API Documentation](./docs)
+* [API Documentation](https://github.com/lithic-io/immdux/tree/master/packages/core/docs)
