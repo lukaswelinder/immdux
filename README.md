@@ -7,7 +7,7 @@ Immutable, observable, dynamic state engine compatible with the redux ecosystem.
 
 ## Contents
 
-* [@immdux/core](./packages/core)
+* [@immdux/core](./packages/immdux-core)
 
 ## Introduction
 
