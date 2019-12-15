@@ -45,7 +45,7 @@ describe('reducer API', () => {
         removeReducer(mockKeyPath);
       },
     );
-    it('allows registering a reducer where state state is not yet defined', () => {
+    it('allows registering a reducer where state is not yet defined', () => {
       setState(mockState1);
       const mockKeyPath = ['r1', 'nested', 'testing'];
       const mockReducer = jest.fn((state, _) => state);
