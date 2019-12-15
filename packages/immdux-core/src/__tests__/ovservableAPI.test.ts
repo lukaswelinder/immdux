@@ -27,20 +27,6 @@ const mockState1 = fromJS({
 
 describe('observable API', () => {
   describe('ActionObservable', () => {
-    it('will not emit actions until connected', () => {
-      setState(mockState1);
-      const mockSubscriber = jest.fn();
-      const myAction$ = new ActionObservable();
-      const s = myAction$.subscribe(mockSubscriber);
-      dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
-      expect(mockSubscriber).toHaveBeenCalledTimes(0);
-      const c = myAction$.connect();
-      dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
-      expect(mockSubscriber).toHaveBeenCalledTimes(1);
-      s.unsubscribe();
-      c.unsubscribe();
-    });
-
     it('supports filtering by one or more strings', () => {
       setState(mockState1);
       const mockSubscriber1 = jest.fn();
@@ -49,8 +35,6 @@ describe('observable API', () => {
       const test2Action$ = new ActionObservable('TEST_1', 'TEST_2');
       const s1 = test1Action$.subscribe(mockSubscriber1);
       const s2 = test2Action$.subscribe(mockSubscriber2);
-      const c1 = test1Action$.connect();
-      const c2 = test2Action$.connect();
       dispatch({ type: 'TEST_1', payload: 'hello world' });
       dispatch({ type: 'TEST_2', payload: 'hello world' });
       dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
@@ -58,8 +42,6 @@ describe('observable API', () => {
       expect(mockSubscriber2).toHaveBeenCalledTimes(2);
       s1.unsubscribe();
       s2.unsubscribe();
-      c1.unsubscribe();
-      c2.unsubscribe();
     });
 
     it('supports filtering by one or more regex patterns', () => {
@@ -70,8 +52,6 @@ describe('observable API', () => {
       const test2Action$ = new ActionObservable(/.+_\d/, /.+_ACTION/);
       const s1 = test1Action$.subscribe(mockSubscriber1);
       const s2 = test2Action$.subscribe(mockSubscriber2);
-      const c1 = test1Action$.connect();
-      const c2 = test2Action$.connect();
       dispatch({ type: 'TEST_1', payload: 'hello world' });
       dispatch({ type: 'TEST_2', payload: 'hello world' });
       dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
@@ -79,8 +59,6 @@ describe('observable API', () => {
       expect(mockSubscriber2).toHaveBeenCalledTimes(3);
       s1.unsubscribe();
       s2.unsubscribe();
-      c1.unsubscribe();
-      c2.unsubscribe();
     });
 
     it('supports filtering by one or more regex patterns and/or strings', () => {
@@ -88,20 +66,16 @@ describe('observable API', () => {
       const mockSubscriber1 = jest.fn();
       const mockSubscriber2 = jest.fn();
       const test1Action$ = new ActionObservable(/.+_1/);
-      const test2Action$ = new ActionObservable(/.+_\d/, 'TEST_ACTION');
+      const test2Action$ = new ActionObservable(/.+_2/, 'TEST_ACTION');
       const s1 = test1Action$.subscribe(mockSubscriber1);
       const s2 = test2Action$.subscribe(mockSubscriber2);
-      const c1 = test1Action$.connect();
-      const c2 = test2Action$.connect();
       dispatch({ type: 'TEST_1', payload: 'hello world' });
       dispatch({ type: 'TEST_2', payload: 'hello world' });
       dispatch({ type: 'TEST_ACTION', payload: 'hello world' });
       expect(mockSubscriber1).toHaveBeenCalledTimes(1);
-      expect(mockSubscriber2).toHaveBeenCalledTimes(3);
+      expect(mockSubscriber2).toHaveBeenCalledTimes(2);
       s1.unsubscribe();
       s2.unsubscribe();
-      c1.unsubscribe();
-      c2.unsubscribe();
     });
   });
 
@@ -119,6 +93,32 @@ describe('observable API', () => {
       s2.unsubscribe();
     });
   });
+
+  describe('StateObservable', () => {
+    it('will not emit state to subscribers until connected', () => {
+      setState(mockState1);
+      const mockSubscriber = jest.fn();
+      const mockReducer = jest.fn((state, action) => {
+        switch (action.type) {
+          case 'TEST_NO_UPDATE':
+            return state.setIn(['r1', 'testing'], 'reducer1');
+          case 'TEST_UPDATE':
+            return state.setIn(['reducer1', 'testing'], 'hello update');
+          default:
+            return state;
+        }
+      });
+      registerReducer([], mockReducer);
+      const myState$ = new StateObservable();
+      const s = myState$.subscribe(mockSubscriber);
+      dispatch({ type: 'TEST_NO_UPDATE' });
+      expect(mockSubscriber).toHaveBeenCalledTimes(1);
+      dispatch({ type: 'TEST_UPDATE' });
+      expect(mockSubscriber).toHaveBeenCalledTimes(2);
+      s.unsubscribe();
+    });
+  });
+
   describe('state$', () => {
     it('emits state when changes occur', () => {
       setState(mockState1);
