@@ -10,7 +10,8 @@ module.exports = {
   excludePrivate: true,
   excludeProtected: true,
   hideGenerator: true,
-  mdHideSources: true,
+  hideSources: true,
+  gitRevision: 'master',
   theme: 'markdown',
   mdEngine: 'github',
 };
