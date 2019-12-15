@@ -26,5 +26,3 @@ for actions, extend this interface.
 ###  type
 
 • **type**: *T*
-
-*Defined in [types/index.ts:51](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L51)*

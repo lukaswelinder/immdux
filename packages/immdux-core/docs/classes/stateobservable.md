@@ -3,15 +3,10 @@
 # Class: StateObservable <**S**>
 
 The `StateObservable` streams values from a given `KeyPath` in state.
+Subscribing immediately sets `value` and emits the current state.
 
-Similar to `ActionObservable`, the state observable is a connectable
-(multicast) observable, meaning that subscribers will not be called
-until `connect` is called.
-
-However, the state observable is a little different in the way it emits
-because its subject is an `RxJS.BehaviorSubject`, meaning that once
-connected, subscribers immediately (synchronously) are called with
-the latest state.
+The state observable will emit values depth first in the order they
+subscribed.
 
 ## Type parameters
 
@@ -21,7 +16,7 @@ Type for state being observed, defaults to `any`.
 
 ## Hierarchy
 
-* ConnectableObservable‹S›
+* Observable‹S›
 
   ↳ **StateObservable**
 
@@ -40,6 +35,10 @@ Type for state being observed, defaults to `any`.
 * [path](stateobservable.md#path)
 * [value](stateobservable.md#value)
 
+### Methods
+
+* [in](stateobservable.md#in)
+
 ## Constructors
 
 ###  constructor
@@ -47,8 +46,6 @@ Type for state being observed, defaults to `any`.
 \+ **new StateObservable**(`targetKeyPath`: [IterableKeyPath](../README.md#iterablekeypath)): *[StateObservable](stateobservable.md)*
 
 *Overrides void*
-
-*Defined in [reference/observables.ts:149](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/reference/observables.ts#L149)*
 
 **Parameters:**
 
@@ -64,9 +61,7 @@ Name | Type | Default |
 
 • **path**: *ReadonlyArray‹any›*
 
-*Defined in [reference/observables.ts:204](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/reference/observables.ts#L204)*
-
-Observed path in state.
+Path in state that is being observed.
 
 ___
 
@@ -74,9 +69,21 @@ ___
 
 • **value**: *S*
 
-*Defined in [reference/observables.ts:211](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/reference/observables.ts#L211)*
+Latest value, set immediately before value is emitted.
 
-Current state at [`path`](#path). This value is set synchronously after reducers
-have executed, before the next value is emitted.
+## Methods
 
-This property is only defined/updated if the state observable is connected.
+###  in
+
+▸ **in**(`targetKeyPath`: [IterableKeyPath](../README.md#iterablekeypath)): *[StateObservable](stateobservable.md)‹any›*
+
+Creates a nested `StateObservable` using this state observable's
+path as the base.
+
+**Parameters:**
+
+Name | Type | Default | Description |
+------ | ------ | ------ | ------ |
+`targetKeyPath` | [IterableKeyPath](../README.md#iterablekeypath) |  [] |  Concatenated on to existing path.  |
+
+**Returns:** *[StateObservable](stateobservable.md)‹any›*

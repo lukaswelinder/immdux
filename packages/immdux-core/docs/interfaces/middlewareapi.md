@@ -28,14 +28,10 @@
 
 • **dispatch**: *D*
 
-*Defined in [types/index.ts:70](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L70)*
-
 ## Methods
 
 ###  getState
 
 ▸ **getState**(): *S*
-
-*Defined in [types/index.ts:69](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L69)*
 
 **Returns:** *S*

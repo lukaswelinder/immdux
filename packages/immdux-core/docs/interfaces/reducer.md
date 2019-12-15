@@ -16,8 +16,6 @@
 
 ▸ (`state`: S | undefined, `action`: A): *S*
 
-*Defined in [types/index.ts:77](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L77)*
-
 **Parameters:**
 
 Name | Type |

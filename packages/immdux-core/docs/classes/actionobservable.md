@@ -2,46 +2,13 @@
 
 # Class: ActionObservable <**A**>
 
-The `ActionObservable` is a connectable (multicast) observable that streams
-dispatched actions once reducers have completed executing and the
-latest state has been emitted.
+The `ActionObservable` is a simple observable that emits actions.
 
-An advantage to creating your own action observable instead of using
-the exported `action$` is having the ability to "initialize" your
-subscriptions after they have been created.
+Actions are emitted after state observables, making the action
+observable useful for scheduling updates.
 
-```ts
-import { Subscription } from 'rxjs';
-import { ActionObservable, AnyAction } from 'immdux';
-
-const myAction$: ActionObservable<AnyAction> = new ActionObservable();
-const mySubscription: Subscription = myAction$.subscribe((action) => {
-  console.log(action.type);
-});
-// ... add more subscribers
-```
-
-Nothing will be emitted to subscribers until `connect` is called.
-
-```ts
-const rootSubscription: Subscription = myAction$.connect();
-```
-
-If we want to stop the stream of actions to subscribers, we simply
-unsubscribe from `rootSubscription`.
-
-```ts
-rootSubscription.unsubscribe();
-```
-
-We can easily resume the stream by calling `connect` again.
-
-```ts
-const newRootSubscription: Subscription = myAction$.connect();
-```
-
-This behavior makes it easy to improve performance by providing
-a single place to toggle multiple observables.
+**`param`** 
+One or more strings or regex statements used to filter actions by type.
 
 ## Type parameters
 
@@ -49,7 +16,7 @@ a single place to toggle multiple observables.
 
 ## Hierarchy
 
-* ConnectableObservable‹A›
+* Observable‹A›
 
   ↳ **ActionObservable**
 
@@ -70,8 +37,6 @@ a single place to toggle multiple observables.
 \+ **new ActionObservable**(...`types`: string | RegExp[]): *[ActionObservable](actionobservable.md)*
 
 *Overrides void*
-
-*Defined in [reference/observables.ts:111](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/reference/observables.ts#L111)*
 
 **Parameters:**
 

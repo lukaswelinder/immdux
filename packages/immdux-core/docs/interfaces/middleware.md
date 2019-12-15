@@ -18,8 +18,6 @@
 
 ▸ (`api`: [MiddlewareAPI](middlewareapi.md)‹D, S›): *function*
 
-*Defined in [types/index.ts:73](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L73)*
-
 **Parameters:**
 
 Name | Type |

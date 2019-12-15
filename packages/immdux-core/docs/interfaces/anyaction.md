@@ -39,5 +39,3 @@ to bother with defining those properties.
 • **type**: *T*
 
 *Inherited from [Action](action.md).[type](action.md#type)*
-
-*Defined in [types/index.ts:51](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L51)*

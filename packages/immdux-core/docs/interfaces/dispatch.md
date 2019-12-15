@@ -14,8 +14,6 @@
 
 ▸ <**T**>(`action`: T): *T*
 
-*Defined in [types/index.ts:64](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L64)*
-
 **Type parameters:**
 
 ▪ **T**: *A*

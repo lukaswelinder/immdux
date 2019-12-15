@@ -30,23 +30,17 @@
 
 • **dispatch**: *[Dispatch](dispatch.md)‹A›*
 
-*Defined in [types/index.ts:83](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L83)*
-
 ___
 
 ###  subscribe
 
 • **subscribe**: *subscribe*
 
-*Defined in [types/index.ts:84](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L84)*
-
 ## Methods
 
 ###  getState
 
 ▸ **getState**(): *S*
-
-*Defined in [types/index.ts:82](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L82)*
 
 **Returns:** *S*
 
@@ -55,7 +49,5 @@ ___
 ###  observable
 
 ▸ **observable**(): *[StateObservable](../classes/stateobservable.md)‹S›*
-
-*Defined in [types/index.ts:85](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L85)*
 
 **Returns:** *[StateObservable](../classes/stateobservable.md)‹S›*

@@ -41,8 +41,6 @@ Iterable value type. Defaults to `any`.
 
 *Inherited from void*
 
-Defined in /Users/lukaswelinder/Documents/dev/projects/immdux/node_modules/typedoc/node_modules/typescript/lib/lib.es2015.iterable.d.ts:43
-
 **Returns:** *Iterator‹V›*
 
 ___
@@ -50,8 +48,6 @@ ___
 ###  reduce
 
 ▸ **reduce**<**R**>(`reducer`: function, `initialReduction?`: R, `context?`: any): *R*
-
-*Defined in [types/index.ts:12](https://github.com/lithic-io/immdux/blob/b184a39/packages/immdux-core/src/types/index.ts#L12)*
 
 **Type parameters:**
 
