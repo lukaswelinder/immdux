@@ -1,10 +1,12 @@
-import { Observer, Observable, ConnectableObservable, Subject, BehaviorSubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observer, Observable, ConnectableObservable, Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
+import { filter, publish, refCount, publishBehavior } from 'rxjs/operators';
 
 import { Collection, OrderedSet, getIn } from 'immutable';
 
 import { struct } from './struct';
 import { toKeyPathSeq } from '../utils/keypath';
+
+import { isDispatching } from './status';
 
 import { IterableKeyPath, AnyAction } from '../types';
 
@@ -16,17 +18,14 @@ const actionObserverSet: OrderedSet<Observer<any>> = OrderedSet().asMutable();
 /** @hidden */
 let actionObserverArr: Observer<any>[] = [];
 /** @hidden */
-let queuedStateObservers: [(state: any) => void, any][] = [];
+let queuedStateObservers: (() => void)[] = [];
 /** @hidden */
 export function flushQueuedObservers(action: AnyAction) {
   for (let i = 0; i < queuedStateObservers.length; i++) {
     const queued = queuedStateObservers[i];
-    if (queued) {
-      const [handleNext, state] = queued;
-      handleNext(state);
-    }
+    if (queued) queued();
   }
-  // TODO: consider action emission before state emission
+  // TODO: consider action emission before state emission ?
   for (let i = 0; i < actionObserverArr.length; i++) {
     actionObserverArr[i].next(action);
   }
@@ -65,63 +64,36 @@ function ofType<A extends AnyAction = AnyAction>(types: (string | RegExp)[]) {
 }
 
 /**
- * The `ActionObservable` is a connectable (multicast) observable that streams
- * dispatched actions once reducers have completed executing and the
- * latest state has been emitted.
+ * The `ActionObservable` is a simple observable that emits actions.
  *
- * An advantage to creating your own action observable instead of using
- * the exported `action$` is having the ability to "initialize" your
- * subscriptions after they have been created.
+ * Actions are emitted after state observables, making the action
+ * observable useful for scheduling updates.
  *
- * ```ts
- * import { Subscription } from 'rxjs';
- * import { ActionObservable, AnyAction } from 'immdux';
- *
- * const myAction$: ActionObservable<AnyAction> = new ActionObservable();
- * const mySubscription: Subscription = myAction$.subscribe((action) => {
- *   console.log(action.type);
- * });
- * // ... add more subscribers
- * ```
- *
- * Nothing will be emitted to subscribers until `connect` is called.
- *
- * ```ts
- * const rootSubscription: Subscription = myAction$.connect();
- * ```
- *
- * If we want to stop the stream of actions to subscribers, we simply
- * unsubscribe from `rootSubscription`.
- *
- * ```ts
- * rootSubscription.unsubscribe();
- * ```
- *
- * We can easily resume the stream by calling `connect` again.
- *
- * ```ts
- * const newRootSubscription: Subscription = myAction$.connect();
- * ```
- *
- * This behavior makes it easy to improve performance by providing
- * a single place to toggle multiple observables.
+ * @param types
+ * One or more strings or regex statements used to filter actions by type.
  *
  * @noInheritDoc
  */
-export class ActionObservable<A extends AnyAction = AnyAction> extends ConnectableObservable<A> {
+export class ActionObservable<A extends AnyAction = AnyAction> extends Observable<A> {
   constructor(...types: (string | RegExp)[]) {
-    const observable = new Observable((observer: Observer<A>) => {
+    const observe = (observer: Observer<A>) => {
+      if (isDispatching) {
+        throw new Error(
+          'Subscribing while reducers are executing is forbidden.',
+        );
+      }
       actionObserverSet.add(observer);
       actionObserverArr = actionObserverSet.toArray();
       return () => {
         actionObserverSet.remove(observer);
         actionObserverArr = actionObserverSet.toArray();
       };
-    });
-    super(types.length ? observable.pipe(ofType<A>(types)) : observable, () => new Subject());
+    };
+    super(observe);
+    if (types.length) return this.pipe(ofType<A>(types));
   }
   /** @hidden */
-  public lift(operator: any) {
+  public lift(operator: any): ActionObservable<any> {
     const observable = new ActionObservable<any>();
     observable.source = this;
     observable.operator = operator;
@@ -131,94 +103,98 @@ export class ActionObservable<A extends AnyAction = AnyAction> extends Connectab
 
 /**
  * The `StateObservable` streams values from a given `KeyPath` in state.
+ * Subscribing immediately sets `value` and emits the current state.
  *
- * Similar to `ActionObservable`, the state observable is a connectable
- * (multicast) observable, meaning that subscribers will not be called
- * until `connect` is called.
- *
- * However, the state observable is a little different in the way it emits
- * because its subject is an `RxJS.BehaviorSubject`, meaning that once
- * connected, subscribers immediately (synchronously) are called with
- * the latest state.
+ * The state observable will emit values depth first in the order they
+ * subscribed.
  *
  * @param S
  * Type for state being observed, defaults to `any`.
  *
  * @noInheritDoc
  */
-export class StateObservable<S = any> extends ConnectableObservable<S> {
+export class StateObservable<S = any> extends Observable<S> {
   constructor(targetKeyPath: IterableKeyPath = []) {
     // TODO: reevaluate approach to keypath types
     const keyPathSeq = toKeyPathSeq(targetKeyPath);
-    super(
-      // Observable that leverages `Immit` to capture state changes at depth.
-      new Observable((observer: Observer<any>) => {
-        let isQueued: boolean = false;
-        let queueIndex: number | null = null;
-        const handleNext = (state: S) => {
-          isQueued = false;
-          queueIndex = null;
-          observer.next(state);
-        };
-        const observerRef: [(state: S) => void, any] = [handleNext, undefined];
-        const unsubscribe = struct.subscribe(keyPathSeq, (state: any) => {
-          (this as any).value = state;
-          if (isQueued) {
-            queuedStateObservers[queueIndex] = null;
-          }
-          isQueued = true;
-          // Set ref state.
-          observerRef[1] = state;
-          // Set ref to queue index.
-          queueIndex = queuedStateObservers.length;
-          queuedStateObservers.push(observerRef);
-        });
-        // Return cleanup fn.
-        return () => {
-          // Remove from current place in queue.
+    const observe = (observer: Observer<any>) => {
+      if (isDispatching) {
+        throw new Error(
+          'Subscribing while reducers are executing is forbidden.',
+        );
+      }
+      (this as any).path = keyPathSeq.toArray();
+      (this as any).value = getIn(struct.current, this.path, undefined);
+      // Value reference for closure.
+      let value: S = this.value;
+      let isQueued: boolean = false;
+      let queueIndex: number | null = null;
+      const handleNext = () => {
+        (this as any).value = value;
+        isQueued = false;
+        queueIndex = null;
+        observer.next(value);
+      };
+      const unsubscribe = struct.subscribe(keyPathSeq, (state: any) => {
+        // Remove from queue, should only emit last from reducer execution.
+        if (isQueued) queuedStateObservers[queueIndex] = null;
+        else isQueued = true;
+        value = state;
+        // Set ref queue index and add to queue.
+        queueIndex = queuedStateObservers.length;
+        queuedStateObservers.push(handleNext);
+      });
+      observer.next(this.value);
+      // Return cleanup fn.
+      return () => {
+        // Remove from current place in queue.
+        if (isQueued)
           queuedStateObservers[queueIndex] = null;
-          // Unsubscribe from struct.
-          unsubscribe();
-        };
-      }),
-      // Subject factory, called first upon `.connect()` invocation.
-      () => {
-        // Set value on state observable.
-        (this as any).value = getIn(struct.current, keyPathSeq, undefined);
-        // Returns a behavior subject (ensures that subscribers immediately get most recent value).
-        return new BehaviorSubject<S>(this.value);
-      },
-    );
-    this.path = keyPathSeq.toArray();
+        // Unsubscribe from struct.
+        unsubscribe();
+      };
+    };
+    super(observe);
   }
   /** @hidden */
-  public lift(operator: any) {
+  public lift(operator: any): StateObservable<any> {
     const observable = new StateObservable<any>();
     observable.source = this;
-    observable.operator = operator; // TODO: investigate deprecation and its impact
+    observable.operator = operator;
     return observable;
   }
+
   /**
-   * Observed path in state.
+   * Latest value, set immediately before value is emitted.
    */
-  public readonly path: ReadonlyArray<any>;
+  readonly value: S;
+
   /**
-   * Current state at [`path`](#path). This value is set synchronously after reducers
-   * have executed, before the next value is emitted.
+   * Path in state that is being observed.
+   */
+  readonly path: ReadonlyArray<any>;
+
+  /**
+   * Creates a nested `StateObservable` using this state observable's
+   * path as the base.
    *
-   * This property is only defined/updated if the state observable is connected.
+   * @param targetKeyPath
+   * Concatenated on to existing path.
    */
-  public readonly value: S;
+  public in(targetKeyPath: IterableKeyPath = []) {
+    return new StateObservable(
+      this.path.concat(toKeyPathSeq(targetKeyPath).toArray()),
+    );
+  }
 }
 
 /**
- * Root action observable, always connected.
+ * Root action observable.
  */
-export const action$: ActionObservable = new ActionObservable();
-action$.connect();
+export const action$: ActionObservable<AnyAction> = new ActionObservable();
 
 /**
- * Root state observable, always connected.
+ * Root state observable.
  */
-export const state$: StateObservable<Collection<any, any>> = new StateObservable();
-state$.connect();
+export const state$: StateObservable<Collection<any, any>> = new StateObservable([]);
+state$.subscribe(); // Empty subscribe to keep `value` updated.
