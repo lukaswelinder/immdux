@@ -1,20 +1,11 @@
-import { fromJS, is } from 'immutable';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { fromJS } from 'immutable';
 import promiseMiddleware from 'redux-promise-middleware';
 
 import {
-  registerReducer,
-  removeReducer,
   registerMiddleware,
   removeMiddleware,
-  store,
-  action$,
-  state$,
   dispatch,
   setState,
-  REGISTER_REDUCER,
-  REMOVE_REDUCER,
 } from '../';
 
 const mockState1 = fromJS({
