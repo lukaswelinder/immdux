@@ -1,5 +1,5 @@
 export { store } from './handlers/store';
-export { ActionObservable, StateObservable, action$, state$ } from './handlers/observables';
+export { ActionObservable, StateObservable, action$, state$, ofType } from './handlers/observables';
 
 export { registerReducer, removeReducer } from './handlers/reducers';
 

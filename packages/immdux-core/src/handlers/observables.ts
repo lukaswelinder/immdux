@@ -1,5 +1,5 @@
-import { Observer, Observable, ConnectableObservable, Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
-import { filter, publish, refCount, publishBehavior } from 'rxjs/operators';
+import { Observer, Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { Collection, OrderedSet, getIn } from 'immutable';
 
@@ -10,7 +10,6 @@ import { isDispatching } from '../reference/status';
 
 import { IterableKeyPath, AnyAction } from '../types';
 
-// TODO: move helper fns to `handlers/observables`
 // TODO: consider using ES6 set or array instead of imm ordered set
 
 /** @hidden */
@@ -25,17 +24,21 @@ export function flushQueuedObservers(action: AnyAction) {
     const queued = queuedStateObservers[i];
     if (queued) queued();
   }
-  // TODO: consider action emission before state emission ?
   for (let i = 0; i < actionObserverArr.length; i++) {
     actionObserverArr[i].next(action);
   }
   queuedStateObservers = [];
 }
-
 /** @hidden */
 const COMMON_NULL: null = null; // Reduces memory usage when creating type maps.
-/** @hidden */
-function ofType<A extends AnyAction = AnyAction>(types: (string | RegExp)[]) {
+
+/**
+ * Observable operator used for filtering action observable by `action.type`.
+ *
+ * @param types
+ * One or more strings or regex statements used to filter actions by type.
+ */
+export function ofType<A extends AnyAction = AnyAction>(types: (string | RegExp)[]) {
   const typeMap: { [key: string]: null } = {};
   const regExpArr: RegExp[] = [];
   for (let i = 0; i < types.length; i++) {
