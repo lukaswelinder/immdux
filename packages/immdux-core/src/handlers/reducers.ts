@@ -1,7 +1,7 @@
 import { reducers } from '../reference/reducers';
 import { isDispatching } from '../reference/status';
-import { dispatch } from './store';
-import { REGISTER_REDUCER, REMOVE_REDUCER } from '../actions/actionTypes';
+import { dispatch } from './dispatch';
+import { REGISTER_REDUCER, REMOVE_REDUCER } from '../constants/actionTypes';
 
 import { IterableKeyPath, Action, AnyAction, Reducer } from '../types';
 

@@ -3,10 +3,10 @@ import { filter, publish, refCount, publishBehavior } from 'rxjs/operators';
 
 import { Collection, OrderedSet, getIn } from 'immutable';
 
-import { struct } from './struct';
+import { struct } from '../reference/struct';
 import { toKeyPathSeq } from '../utils/keypath';
 
-import { isDispatching } from './status';
+import { isDispatching } from '../reference/status';
 
 import { IterableKeyPath, AnyAction } from '../types';
 

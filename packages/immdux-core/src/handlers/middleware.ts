@@ -1,6 +1,6 @@
 import { middleware } from '../reference/middleware';
-import { store } from '../reference/store';
-import { dispatchInternal, setDispatchThroughMiddleware } from './store';
+import { store } from './store';
+import { dispatchInternal, setDispatchThroughMiddleware } from './dispatch';
 import {
   isDispatching,
   isRegisteringMiddleware,
@@ -8,7 +8,7 @@ import {
 } from '../reference/status';
 import { compose } from '../utils/functional';
 
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from '../types';
+import { Dispatch, Middleware } from '../types';
 
 export function registerMiddleware<M extends Middleware = Middleware>(...middlewares: M[]) {
   if (isDispatching) throw new Error('Registering middleware from reducer is forbidden.');

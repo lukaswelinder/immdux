@@ -1,7 +1,7 @@
 import { Collection, Map, OrderedSet, Seq } from 'immutable';
 import { Observable } from 'rxjs';
 
-import { StateObservable } from '../reference/observables';
+import { StateObservable } from '../handlers/observables';
 
 /**
  * Generic `Iterable` with a `reduce` method.
