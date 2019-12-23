@@ -1,6 +1,6 @@
 import { Seq, isIndexed } from 'immutable';
 
-import { KeyPath, IterableKeyPath } from '../types';
+import { IterableKeyPath } from '../types';
 
 /**
  * Ensures that `keyPath` is `Seq.Indexed`.

@@ -29,9 +29,9 @@ export function flushQueuedObservers(action: AnyAction) {
   }
   queuedStateObservers = [];
 }
+
 /** @hidden */
 const COMMON_NULL: null = null; // Reduces memory usage when creating type maps.
-
 /**
  * Observable operator used for filtering action observable by `action.type`.
  *
@@ -69,8 +69,29 @@ export function ofType<A extends AnyAction = AnyAction>(types: (string | RegExp)
 /**
  * The `ActionObservable` is a simple observable that emits actions.
  *
- * Actions are emitted after state observables, making the action
- * observable useful for scheduling updates.
+ * Actions are emitted after state observables. This makes the
+ * action observable useful for scheduling updates.
+ *
+ * ```ts
+ * import { Observable, combineLatest } from 'rxjs';
+ * import { sample } from 'rxjs/operators';
+ * import { action$, state$ } from '@immdux/core';
+ *
+ * interface ChatError {}
+ * interface ChatMessage {}
+ * interface User {}
+ * type ChatObservable = Observable<[ChatError, ChatMessage[], User]>;
+ *
+ * const chatError$ = state$.in(['chat', 'error']);
+ * const chatMessages$ = state$.in(['chat', 'messages']);
+ * const usersOnline$ = state$.in(['session', 'users', 'onlineList']);
+ *
+ * const chat$: ChatObservable = combineLatest(
+ *   chatError$,
+ *   chatMessages,
+ *   usersOnline$,
+ * ).pipe(sample(action$));
+ * ```
  *
  * @param types
  * One or more strings or regex statements used to filter actions by type.
@@ -109,7 +130,8 @@ export class ActionObservable<A extends AnyAction = AnyAction> extends Observabl
  * Subscribing immediately sets `value` and emits the current state.
  *
  * The state observable will emit values depth first in the order they
- * subscribed.
+ * subscribed. See the [[ActionObservable|ActionObservable docs]] for an
+ * example of how to combine state observables into a single update.
  *
  * @param S
  * Type for state being observed, defaults to `any`.
@@ -182,7 +204,7 @@ export class StateObservable<S = any> extends Observable<S> {
    * path as the base.
    *
    * @param targetKeyPath
-   * Concatenated on to existing path.
+   * Concatenated onto existing path.
    */
   public in(targetKeyPath: IterableKeyPath = []) {
     return new StateObservable(
@@ -192,12 +214,14 @@ export class StateObservable<S = any> extends Observable<S> {
 }
 
 /**
- * Root action observable.
+ * Root action observable. See [[ActionObservable|ActionObservable docs]]
+ * for more information.
  */
 export const action$: ActionObservable<AnyAction> = new ActionObservable();
 
 /**
- * Root state observable.
+ * Root state observable. See [[StateObservable|StateObservable docs]]
+ * for more information.
  */
 export const state$: StateObservable<Collection<any, any>> = new StateObservable([]);
 state$.subscribe(); // Empty subscribe to keep `value` updated.
