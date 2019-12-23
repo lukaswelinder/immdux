@@ -3,6 +3,9 @@ import { Observable } from 'rxjs';
 
 import { StateObservable } from '../handlers/observables';
 
+
+// TODO: deprecate alternative keypath types, only accept array
+
 /**
  * Generic `Iterable` with a `reduce` method.
  * @param K - Iterable key type. Defaults to `any`.
@@ -61,8 +64,8 @@ export interface AnyAction extends Action {
   [key: string]: any;
 }
 
-export interface Dispatch<A = AnyAction> {
-  <T extends A>(action: T): T;
+export interface Dispatch<A extends Action = AnyAction> {
+  <T extends A>(action: T, ...additionalArgs: any[]): T;
 }
 
 export interface MiddlewareAPI<D extends Dispatch = Dispatch, S = any> {
@@ -71,14 +74,14 @@ export interface MiddlewareAPI<D extends Dispatch = Dispatch, S = any> {
 }
 
 export interface Middleware<DispatchExt = {}, S = any, D extends Dispatch = Dispatch> {
-  (api: MiddlewareAPI<D, S>): (next: D) => (action: any) => any;
+  (api: MiddlewareAPI<D, S>): (next: Dispatch<AnyAction>) => (action: any) => any;
 }
 
 export interface Reducer<S = any, A extends Action = AnyAction> {
   (state: S | undefined, action: A): S;
 }
 
-export interface Store<S = any, A = AnyAction> {
+export interface Store<S = any, A extends Action = AnyAction> {
   getState(): S;
   dispatch: Dispatch<A>;
   subscribe: typeof Observable.prototype.subscribe;
