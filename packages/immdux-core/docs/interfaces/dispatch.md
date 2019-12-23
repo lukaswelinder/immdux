@@ -4,7 +4,7 @@
 
 ## Type parameters
 
-▪ **A**
+▪ **A**: *[Action](action.md)*
 
 ## Hierarchy
 
@@ -12,7 +12,7 @@
 
 ## Callable
 
-▸ <**T**>(`action`: T): *T*
+▸ <**T**>(`action`: T, ...`additionalArgs`: any[]): *T*
 
 **Type parameters:**
 
@@ -23,5 +23,6 @@
 Name | Type |
 ------ | ------ |
 `action` | T |
+`...additionalArgs` | any[] |
 
 **Returns:** *T*

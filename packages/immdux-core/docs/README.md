@@ -37,6 +37,7 @@
 ### Functions
 
 * [dispatch](README.md#dispatch)
+* [ofType](README.md#oftype)
 * [registerMiddleware](README.md#registermiddleware)
 * [registerReducer](README.md#registerreducer)
 * [removeMiddleware](README.md#removemiddleware)
@@ -89,7 +90,8 @@ ___
 
 • **action$**: *[ActionObservable](classes/actionobservable.md)‹[AnyAction](interfaces/anyaction.md)›* =  new ActionObservable()
 
-Root action observable.
+Root action observable. See [ActionObservable docs](classes/actionobservable.md)
+for more information.
 
 ___
 
@@ -97,7 +99,8 @@ ___
 
 • **state$**: *[StateObservable](classes/stateobservable.md)‹Collection‹any, any››* =  new StateObservable([])
 
-Root state observable.
+Root state observable. See [StateObservable docs](classes/stateobservable.md)
+for more information.
 
 ## Functions
 
@@ -118,6 +121,26 @@ Name | Type |
 `action` | A |
 
 **Returns:** *A*
+
+___
+
+###  ofType
+
+▸ **ofType**<**A**>(`types`: string | RegExp[]): *MonoTypeOperatorFunction‹A›*
+
+Observable operator used for filtering action observable by `action.type`.
+
+**Type parameters:**
+
+▪ **A**: *[AnyAction](interfaces/anyaction.md)*
+
+**Parameters:**
+
+Name | Type | Description |
+------ | ------ | ------ |
+`types` | string &#124; RegExp[] |  One or more strings or regex statements used to filter actions by type.  |
+
+**Returns:** *MonoTypeOperatorFunction‹A›*
 
 ___
 

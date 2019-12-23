@@ -6,7 +6,8 @@ The `StateObservable` streams values from a given `KeyPath` in state.
 Subscribing immediately sets `value` and emits the current state.
 
 The state observable will emit values depth first in the order they
-subscribed.
+subscribed. See the [ActionObservable docs](actionobservable.md) for an
+example of how to combine state observables into a single update.
 
 ## Type parameters
 
@@ -84,6 +85,6 @@ path as the base.
 
 Name | Type | Default | Description |
 ------ | ------ | ------ | ------ |
-`targetKeyPath` | [IterableKeyPath](../README.md#iterablekeypath) |  [] |  Concatenated on to existing path.  |
+`targetKeyPath` | [IterableKeyPath](../README.md#iterablekeypath) |  [] |  Concatenated onto existing path.  |
 
 **Returns:** *[StateObservable](stateobservable.md)‹any›*

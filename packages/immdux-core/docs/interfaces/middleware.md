@@ -26,13 +26,13 @@ Name | Type |
 
 **Returns:** *function*
 
-▸ (`next`: D): *function*
+▸ (`next`: [Dispatch](dispatch.md)‹[AnyAction](anyaction.md)›): *function*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`next` | D |
+`next` | [Dispatch](dispatch.md)‹[AnyAction](anyaction.md)› |
 
 ▸ (`action`: any): *any*
 
