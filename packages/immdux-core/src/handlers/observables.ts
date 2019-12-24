@@ -116,13 +116,6 @@ export class ActionObservable<A extends AnyAction = AnyAction> extends Observabl
     super(observe);
     if (types.length) return this.pipe(ofType<A>(types));
   }
-  /** @hidden */
-  public lift(operator: any): ActionObservable<any> {
-    const observable = new ActionObservable<any>();
-    observable.source = this;
-    observable.operator = operator;
-    return observable;
-  }
 }
 
 /**
@@ -180,13 +173,6 @@ export class StateObservable<S = any> extends Observable<S> {
       };
     };
     super(observe);
-  }
-  /** @hidden */
-  public lift(operator: any): StateObservable<any> {
-    const observable = new StateObservable<any>();
-    observable.source = this;
-    observable.operator = operator;
-    return observable;
   }
 
   /**
