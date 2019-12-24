@@ -23,6 +23,6 @@ for actions, extend this interface.
 
 ## Properties
 
-###  type
+### <a id="type" name="type"></a>  type
 
 • **type**: *T*

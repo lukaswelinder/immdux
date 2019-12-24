@@ -26,19 +26,19 @@
 
 ## Properties
 
-###  dispatch
+### <a id="dispatch" name="dispatch"></a>  dispatch
 
 • **dispatch**: *[Dispatch](dispatch.md)‹A›*
 
 ___
 
-###  subscribe
+### <a id="subscribe" name="subscribe"></a>  subscribe
 
 • **subscribe**: *subscribe*
 
 ## Methods
 
-###  getState
+### <a id="getstate" name="getstate"></a>  getState
 
 ▸ **getState**(): *S*
 
@@ -46,7 +46,7 @@ ___
 
 ___
 
-###  observable
+### <a id="observable" name="observable"></a>  observable
 
 ▸ **observable**(): *[StateObservable](../classes/stateobservable.md)‹S›*
 

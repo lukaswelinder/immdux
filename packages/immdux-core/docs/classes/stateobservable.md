@@ -42,7 +42,7 @@ Type for state being observed, defaults to `any`.
 
 ## Constructors
 
-###  constructor
+### <a id="constructor" name="constructor"></a>  constructor
 
 \+ **new StateObservable**(`targetKeyPath`: [IterableKeyPath](../README.md#iterablekeypath)): *[StateObservable](stateobservable.md)*
 
@@ -58,7 +58,7 @@ Name | Type | Default |
 
 ## Properties
 
-###  path
+### <a id="path" name="path"></a>  path
 
 • **path**: *ReadonlyArray‹any›*
 
@@ -66,7 +66,7 @@ Path in state that is being observed.
 
 ___
 
-###  value
+### <a id="value" name="value"></a>  value
 
 • **value**: *S*
 
@@ -74,7 +74,7 @@ Latest value, set immediately before value is emitted.
 
 ## Methods
 
-###  in
+### <a id="in" name="in"></a>  in
 
 ▸ **in**(`targetKeyPath`: [IterableKeyPath](../README.md#iterablekeypath)): *[StateObservable](stateobservable.md)‹any›*
 

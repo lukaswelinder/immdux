@@ -24,13 +24,13 @@
 
 ## Properties
 
-###  dispatch
+### <a id="dispatch" name="dispatch"></a>  dispatch
 
 • **dispatch**: *D*
 
 ## Methods
 
-###  getState
+### <a id="getstate" name="getstate"></a>  getState
 
 ▸ **getState**(): *S*
 

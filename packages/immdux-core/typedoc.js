@@ -14,4 +14,5 @@ module.exports = {
   gitRevision: 'master',
   theme: 'markdown',
   mdEngine: 'github',
+  namedAnchors: true,
 };

@@ -53,7 +53,7 @@ One or more strings or regex statements used to filter actions by type.
 
 ## Constructors
 
-###  constructor
+### <a id="constructor" name="constructor"></a>  constructor
 
 \+ **new ActionObservable**(...`types`: string | RegExp[]): *[ActionObservable](actionobservable.md)*
 

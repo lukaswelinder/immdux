@@ -50,43 +50,43 @@
 
 ## Type aliases
 
-###  IterableKeyPath
+### <a id="iterablekeypath" name="iterablekeypath"></a>  IterableKeyPath
 
 Ƭ **IterableKeyPath**: *[ReducibleIterable](interfaces/reducibleiterable.md)‹K, V›*
 
 ___
 
-###  KeyPath
+### <a id="keypath" name="keypath"></a>  KeyPath
 
 Ƭ **KeyPath**: *[IterableKeyPath](README.md#iterablekeypath)‹K, V› | [PrimitiveKeyPath](README.md#primitivekeypath)*
 
 ___
 
-###  PrimitiveKeyPath
+### <a id="primitivekeypath" name="primitivekeypath"></a>  PrimitiveKeyPath
 
 Ƭ **PrimitiveKeyPath**: *undefined | null | number | string*
 
 ## Variables
 
-### `Const` REGISTER_REDUCER
+### <a id="const-register_reducer" name="const-register_reducer"></a> `Const` REGISTER_REDUCER
 
 • **REGISTER_REDUCER**: *string* = "@@immdux/REGISTER_REDUCER"
 
 ___
 
-### `Const` REMOVE_REDUCER
+### <a id="const-remove_reducer" name="const-remove_reducer"></a> `Const` REMOVE_REDUCER
 
 • **REMOVE_REDUCER**: *string* = "@@immdux/REMOVE_REDUCER"
 
 ___
 
-### `Const` SET_STATE
+### <a id="const-set_state" name="const-set_state"></a> `Const` SET_STATE
 
 • **SET_STATE**: *string* = "@@immdux/SET_STATE"
 
 ___
 
-### `Const` action$
+### <a id="const-action$" name="const-action$"></a> `Const` action$
 
 • **action$**: *[ActionObservable](classes/actionobservable.md)‹[AnyAction](interfaces/anyaction.md)›* =  new ActionObservable()
 
@@ -95,7 +95,7 @@ for more information.
 
 ___
 
-### `Const` state$
+### <a id="const-state$" name="const-state$"></a> `Const` state$
 
 • **state$**: *[StateObservable](classes/stateobservable.md)‹Collection‹any, any››* =  new StateObservable([])
 
@@ -104,7 +104,7 @@ for more information.
 
 ## Functions
 
-###  dispatch
+### <a id="dispatch" name="dispatch"></a>  dispatch
 
 ▸ **dispatch**<**A**>(`action`: A): *A*
 
@@ -124,7 +124,7 @@ Name | Type |
 
 ___
 
-###  ofType
+### <a id="oftype" name="oftype"></a>  ofType
 
 ▸ **ofType**<**A**>(`types`: string | RegExp[]): *MonoTypeOperatorFunction‹A›*
 
@@ -144,7 +144,7 @@ Name | Type | Description |
 
 ___
 
-###  registerMiddleware
+### <a id="registermiddleware" name="registermiddleware"></a>  registerMiddleware
 
 ▸ **registerMiddleware**<**M**>(...`middlewares`: M[]): *void*
 
@@ -162,7 +162,7 @@ Name | Type |
 
 ___
 
-###  registerReducer
+### <a id="registerreducer" name="registerreducer"></a>  registerReducer
 
 ▸ **registerReducer**<**S**, **A**>(`targetKeyPath`: [IterableKeyPath](README.md#iterablekeypath), ...`entries`: [Reducer](interfaces/reducer.md)‹S, A›[]): *[Action](interfaces/action.md)‹string› & object*
 
@@ -185,7 +185,7 @@ Name | Type |
 
 ___
 
-###  removeMiddleware
+### <a id="removemiddleware" name="removemiddleware"></a>  removeMiddleware
 
 ▸ **removeMiddleware**<**M**>(...`middlewares`: M[]): *void*
 
@@ -203,7 +203,7 @@ Name | Type |
 
 ___
 
-###  removeReducer
+### <a id="removereducer" name="removereducer"></a>  removeReducer
 
 ▸ **removeReducer**<**S**, **A**>(`targetKeyPath`: [IterableKeyPath](README.md#iterablekeypath), ...`removals`: [Reducer](interfaces/reducer.md)‹S, A›[]): *[Action](interfaces/action.md)‹string› & object*
 
@@ -226,7 +226,7 @@ Name | Type |
 
 ___
 
-###  setState
+### <a id="setstate" name="setstate"></a>  setState
 
 ▸ **setState**(`state`: any): *object*
 
@@ -243,27 +243,27 @@ Name | Type |
 
 ## Object literals
 
-### `Const` store
+### <a id="const-store" name="const-store"></a> `Const` store
 
 ### ▪ **store**: *object*
 
-###  dispatch
+### <a id="dispatch" name="dispatch"></a>  dispatch
 
 • **dispatch**: *[dispatch](README.md#dispatch)*
 
-###  getState
+### <a id="getstate" name="getstate"></a>  getState
 
 ▸ **getState**(): *Collection‹any, any›*
 
 **Returns:** *Collection‹any, any›*
 
-###  observable
+### <a id="observable" name="observable"></a>  observable
 
 ▸ **observable**(): *[StateObservable](classes/stateobservable.md)‹Collection‹any, any››*
 
 **Returns:** *[StateObservable](classes/stateobservable.md)‹Collection‹any, any››*
 
-###  subscribe
+### <a id="subscribe" name="subscribe"></a>  subscribe
 
 ▸ **subscribe**(...`args`: any[]): *Subscription*
 

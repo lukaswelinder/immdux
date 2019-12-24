@@ -35,7 +35,7 @@ Iterable value type. Defaults to `any`.
 
 ## Methods
 
-###  __@iterator
+### <a id="__@iterator" name="__@iterator"></a>  __@iterator
 
 ▸ **__@iterator**(): *Iterator‹V›*
 
@@ -45,7 +45,7 @@ Iterable value type. Defaults to `any`.
 
 ___
 
-###  reduce
+### <a id="reduce" name="reduce"></a>  reduce
 
 ▸ **reduce**<**R**>(`reducer`: function, `initialReduction?`: R, `context?`: any): *R*
 
