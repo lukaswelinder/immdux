@@ -141,7 +141,6 @@ export class StateObservable<S = any> extends Observable<S> {
           'Subscribing while reducers are executing is forbidden.',
         );
       }
-      (this as any).path = keyPathSeq.toArray();
       (this as any).value = getIn(struct.current, this.path, undefined);
       // Value reference for closure.
       let value: S = this.value;
@@ -173,6 +172,8 @@ export class StateObservable<S = any> extends Observable<S> {
       };
     };
     super(observe);
+    (this as any).path = keyPathSeq.toArray();
+    // TODO: throw error if value is accessed before subscribe
   }
 
   /**

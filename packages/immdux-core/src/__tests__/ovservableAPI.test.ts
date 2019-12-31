@@ -1,8 +1,9 @@
-import { fromJS } from 'immutable';
+import { fromJS, is } from 'immutable';
 import { filter } from 'rxjs/operators';
 
 import {
   registerReducer,
+  removeReducer,
   ActionObservable,
   StateObservable,
   action$,
@@ -69,6 +70,26 @@ describe('observable API', () => {
       s1.unsubscribe();
       s2.unsubscribe();
     });
+
+    it('emits an error if subscribed to while reducers are executing', () => {
+      setState(mockState1);
+      const myAction$ = new ActionObservable();
+      let doesError = false;
+      const mockReducer = (state: any, action: any) => {
+        if (action.type === 'SHOULD_ERROR') {
+          myAction$.subscribe({
+            error() {
+              doesError = true;
+            },
+          });
+        }
+        return state;
+      };
+      registerReducer([], mockReducer);
+      dispatch({ type: 'SHOULD_ERROR' });
+      expect(doesError).toBe(true);
+      removeReducer([], mockReducer);
+    });
   });
 
   describe('action$', () => {
@@ -109,21 +130,55 @@ describe('observable API', () => {
       expect(mockSubscriber).toHaveBeenCalledTimes(2);
       s.unsubscribe();
     });
+
+    it('will return a nested observable using `.in()`', () => {
+      setState(mockState1);
+      const state1$ = new StateObservable(['r1']);
+      const state2$ = state1$.in(['nested']);
+      const s1 = state1$.subscribe();
+      const s2 = state2$.subscribe();
+      expect(is(state1$.value, mockState1.getIn(['r1']))).toBe(true);
+      expect(is(state2$.value, mockState1.getIn(['r1', 'nested']))).toBe(true);
+      s1.unsubscribe();
+      s2.unsubscribe();
+    });
+
+    it('emits an error if subscribed to while reducers are executing', () => {
+      setState(mockState1);
+      const myState$ = new StateObservable();
+      let doesError = false;
+      const mockReducer = (state: any, action: any) => {
+        if (action.type === 'SHOULD_ERROR') {
+          myState$.subscribe({
+            error() {
+              doesError = true;
+            },
+          });
+        }
+        return state;
+      };
+      registerReducer([], mockReducer);
+      dispatch({ type: 'SHOULD_ERROR' });
+      expect(doesError).toBe(true);
+      removeReducer([], mockReducer);
+    });
   });
 
   describe('state$', () => {
     it('emits state when changes occur', () => {
       setState(mockState1);
       const mockSubscriber = jest.fn();
-      registerReducer(['r1'], (state, action) => {
+      const mockReducer = (state: any, action: any) => {
         if (action.type === 'CHANGE') {
           return state.set('newProp', 'some_value');
         }
         return state;
-      });
+      };
+      registerReducer(['r1'], mockReducer);
       const s = state$.subscribe(mockSubscriber);
       dispatch({ type: 'CHANGE' });
       expect(mockSubscriber).toHaveBeenCalledTimes(2);
+      removeReducer(['r1'], mockReducer);
       s.unsubscribe();
     });
   });
