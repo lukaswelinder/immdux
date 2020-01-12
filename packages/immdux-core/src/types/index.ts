@@ -84,6 +84,6 @@ export interface Reducer<S = any, A extends Action = AnyAction> {
 export interface Store<S = any, A extends Action = AnyAction> {
   getState(): S;
   dispatch: Dispatch<A>;
-  subscribe: typeof Observable.prototype.subscribe;
+  subscribe: typeof Observable.prototype.subscribe; // TODO: don't do this
   observable(): StateObservable<S>;
 }

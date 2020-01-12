@@ -21,7 +21,7 @@ export function registerMiddleware<M extends Middleware = Middleware>(...middlew
 }
 
 export function removeMiddleware<M extends Middleware = Middleware>(...middlewares: M[]) {
-  if (isDispatching) throwInternalError('Registering middleware from reducer is forbidden.');
+  if (isDispatching) throwInternalError('Removing middleware from reducer is forbidden.');
   for (const middlewareConstructor of middlewares) middleware.remove(middlewareConstructor);
   setDispatchThroughMiddleware(<Dispatch<any>>compose(...middleware.values())(dispatchInternal));
 }
