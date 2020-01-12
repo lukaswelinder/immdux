@@ -27,16 +27,18 @@ export function dispatch<A = any>(action: A): A {
 export function setState(state: any) {
   const prev = struct.current;
   const next = fromJS(state);
-  struct.current = next;
+  // TODO: revisit this, might cause issues
+  struct.update(() => next);
+  // struct.current = next;
   return dispatch({ type: SET_STATE, payload: { prev, next } });
 }
 
 /** @hidden */
 export function dispatchInternal<A extends AnyAction = AnyAction>(action: A): A {
   setIsDispatching(true);
-  const inputState = struct.current;
+  // const inputState = struct.current;
   // Will not trigger observers if inputState is unchanged.
-  struct.update(() => inputState);
+  // struct.update(() => inputState); // This is not needed.
   // Iterate over branch reducers (depth first in order registered).
   for (const [path, reducer] of reducers._cachedIterable)
     struct.updateIn(path, (branchState: any) => {
