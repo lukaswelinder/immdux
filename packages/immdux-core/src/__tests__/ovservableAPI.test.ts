@@ -162,6 +162,60 @@ describe('observable API', () => {
       expect(doesError).toBe(true);
       removeReducer([], mockReducer);
     });
+
+    it('emits only once even if there are multiple nested updates', () => {
+      setState(mockState1);
+      const mockReducer1 = (state: any, action: any) => {
+        if (action.type === 'SHOULD_UPDATE') {
+          return state.set('testing', 'nested_update');
+        }
+        return state;
+      };
+      const mockReducer2 = (state: any, action: any) => {
+        if (action.type === 'SHOULD_UPDATE') {
+          return state.set('testing', 3);
+        }
+        return state;
+      };
+      registerReducer(['r2', 'nested'], mockReducer1);
+      registerReducer(['r2', 'second'], mockReducer2);
+      const myState$ = new StateObservable(['r2']);
+      const mockSubscriber = jest.fn();
+      const s = myState$.subscribe(mockSubscriber);
+      expect(mockSubscriber).toHaveBeenCalledTimes(1);
+      dispatch({ type: 'SHOULD_UPDATE' });
+      expect(mockSubscriber).toHaveBeenCalledTimes(2);
+      expect(mockSubscriber.mock.calls[1][0]).toEqual(myState$.value);
+      s.unsubscribe();
+      removeReducer(['r2', 'nested'], mockReducer1);
+      removeReducer(['r2', 'second'], mockReducer2);
+    });
+
+    it('cleans itself up if unsubscribe is called while queued', () => {
+      setState(mockState1);
+      const mockReducer = (state: string, action: any) => {
+        if (action.type === 'SHOULD_UPDATE') {
+          return 'remove_parent';
+        }
+        return state;
+      };
+      registerReducer(['r2', 'nested', 'testing'], mockReducer);
+      const myState1$ = new StateObservable(['r2']);
+      const myState2$ = new StateObservable(['r2', 'nested', 'testing']);
+      const mockSubscriber1 = jest.fn();
+      const mockSubscriber2 = (value: string) => {
+        if (value === 'remove_parent') {
+          s1.unsubscribe();
+        }
+      };
+      const s1 = myState1$.subscribe(mockSubscriber1);
+      const s2 = myState2$.subscribe(mockSubscriber2);
+      expect(mockSubscriber1).toHaveBeenCalledTimes(1);
+      dispatch({ type: 'SHOULD_UPDATE' });
+      expect(mockSubscriber1).toHaveBeenCalledTimes(1);
+      removeReducer(['r2', 'nested', 'testing'], mockReducer);
+      s2.unsubscribe();
+    });
   });
 
   describe('state$', () => {
