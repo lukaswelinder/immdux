@@ -1,5 +1,4 @@
 import { fromJS } from 'immutable';
-import promiseMiddleware from 'redux-promise-middleware';
 
 import {
   registerReducer,
@@ -7,10 +6,8 @@ import {
   registerMiddleware,
   removeMiddleware,
   dispatch,
-  setState,
+  Middleware,
 } from '../';
-
-import { Middleware } from '../types';
 
 const mockState1 = fromJS({
   r1: { testing: 'reducer1' },
