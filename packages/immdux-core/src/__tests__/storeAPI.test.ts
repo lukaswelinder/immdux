@@ -26,6 +26,7 @@ describe('store API', () => {
       expect(store.observable()).toBeInstanceOf(Observable);
     });
 
+    // TODO: skip first call in order to be compatible w/ redux store behavior
     it('should allow subscribing to state updates via `.subscribe()` method', () => {
       setState(mockState1);
       const mockReducer = (state: any, action: any) => {
