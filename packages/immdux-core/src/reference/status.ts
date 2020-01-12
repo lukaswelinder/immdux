@@ -11,3 +11,10 @@ export let isDispatching: boolean = false;
 export function setIsDispatching(val: boolean): void {
   isDispatching = val;
 }
+
+/** @hidden */
+export function throwInternalError(message: string) {
+  isDispatching = false;
+  isRegisteringMiddleware = false;
+  throw new Error(message);
+}
