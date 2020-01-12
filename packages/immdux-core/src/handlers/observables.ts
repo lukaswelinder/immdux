@@ -6,7 +6,7 @@ import { Collection, OrderedSet, getIn } from 'immutable';
 import { struct } from '../reference/struct';
 import { toKeyPathSeq } from '../utils/keypath';
 
-import { isDispatching, throwInternalError } from '../reference/status';
+import { isDispatching, ImmduxInternalError } from '../reference/status';
 
 import { IterableKeyPath, AnyAction } from '../types';
 
@@ -102,7 +102,7 @@ export class ActionObservable<A extends AnyAction = AnyAction> extends Observabl
   constructor(...types: (string | RegExp)[]) {
     const observe = (observer: Observer<A>) => {
       if (isDispatching) {
-        throwInternalError(
+        throw new ImmduxInternalError(
           'Subscribing while reducers are executing is forbidden.',
         );
       }
@@ -137,7 +137,7 @@ export class StateObservable<S = any> extends Observable<S> {
     const keyPathSeq = toKeyPathSeq(targetKeyPath);
     const observe = (observer: Observer<any>) => {
       if (isDispatching) {
-        throwInternalError(
+        throw new ImmduxInternalError(
           'Subscribing while reducers are executing is forbidden.',
         );
       }

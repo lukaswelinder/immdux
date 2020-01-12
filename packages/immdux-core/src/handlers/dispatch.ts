@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import { toKeyPathSeq } from '../utils/keypath';
-import { isDispatching, isRegisteringMiddleware, setIsDispatching, throwInternalError } from '../reference/status';
+import { isDispatching, isRegisteringMiddleware, setIsDispatching, ImmduxInternalError } from '../reference/status';
 import { flushQueuedObservers } from './observables';
 import { reducers } from '../reference/reducers';
 import { struct } from '../reference/struct';
@@ -15,8 +15,8 @@ import { AnyAction, Dispatch } from '../types';
  */
 export function dispatch<A = any>(action: A): A {
   if (isRegisteringMiddleware)
-    throwInternalError('Dispatching while registering middleware is forbidden.');
-  if (isDispatching) throwInternalError('Dispatching while reducer is executing is forbidden.');
+    throw new ImmduxInternalError('Dispatching while registering middleware is forbidden.');
+  if (isDispatching) throw new ImmduxInternalError('Dispatching while reducer is executing is forbidden.');
   return dispatchThroughMiddleware(<any>action);
 }
 

@@ -3,7 +3,7 @@ import { Map, OrderedSet, getIn, get } from 'immutable';
 import { toKeyPathSeq } from './keypath';
 
 import { IterableKeyPath, RegisTreeMap } from '../types';
-import { throwInternalError } from '../reference/status';
+import { ImmduxInternalError } from '../reference/status';
 
 /** @hidden */
 const LISTENER_KEY = {};
@@ -61,7 +61,7 @@ export class RegisTree<T = any> {
   ): { keyPath: any[]; entries: T[] } {
     const keyPath = toKeyPathSeq(targetKeyPath).toArray();
     const sentinelKeyPathArray = [...keyPath, LISTENER_KEY];
-    if (!entries.length) throwInternalError('No values provided.');
+    if (!entries.length) throw new ImmduxInternalError('No values provided.');
     this.registry.updateIn(
       sentinelKeyPathArray,
       [keyPath, OrderedSet()],

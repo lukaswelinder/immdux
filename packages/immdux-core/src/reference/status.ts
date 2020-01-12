@@ -13,8 +13,10 @@ export function setIsDispatching(val: boolean): void {
 }
 
 /** @hidden */
-export function throwInternalError(message: string) {
-  isDispatching = false;
-  isRegisteringMiddleware = false;
-  throw new Error(message);
+export class ImmduxInternalError extends Error {
+  constructor(message: string) {
+    isDispatching = false;
+    isRegisteringMiddleware = false;
+    super(message);
+  }
 }
