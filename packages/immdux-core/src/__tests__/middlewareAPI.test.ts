@@ -36,31 +36,7 @@ describe('middleware API', () => {
       dispatch({ type: 'TEST' });
       expect(middlewareInnerMock).toHaveBeenCalledTimes(1);
     });
-  });
 
-  describe('registerReducer', () => {
-    it('should throw error if registering or removing middleware while dispatching', () => {
-      setState(mockState1);
-      const mockReducer = (state: any, action: any) => {
-        if (action.type === 'SHOULD_ERROR') {
-          registerMiddleware(promiseMiddleware());
-        }
-        return state;
-      };
-      registerReducer([], mockReducer);
-      let didFail = false;
-      try {
-        dispatch({ type: 'SHOULD_ERROR' });
-      } catch (_) {
-        didFail = true;
-      } finally {
-        expect(didFail).toBe(true);
-        removeReducer([], mockReducer);
-      }
-    });
-  });
-
-  describe('registerReducer', () => {
     it('should throw error if registering or removing middleware while dispatching', () => {
       setState(mockState1);
       const mockMiddleware = ((_) => (next) => (action) => {
@@ -93,6 +69,25 @@ describe('middleware API', () => {
         expect(didRemoveFail).toBe(true);
         removeMiddleware(mockMiddleware);
         removeReducer([], mockReducer);
+      }
+    });
+
+    it('should throw an error if registering or removing middleware while registering middleware', () => {
+      const mockMiddleware1 = ((_) => (next) => (action) => next(action)) as Middleware;
+      const mockMiddleware2 = ((_) => (next) => {
+        registerMiddleware(mockMiddleware1);
+        return (action) => {
+          next(action);
+        };
+      }) as Middleware;
+      let didError = false;
+      try {
+        registerMiddleware(mockMiddleware2);
+      } catch (_) {
+        didError = true;
+      } finally {
+        expect(didError).toBe(true);
+        removeMiddleware(mockMiddleware2);
       }
     });
   });

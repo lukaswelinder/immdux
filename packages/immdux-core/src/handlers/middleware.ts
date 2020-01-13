@@ -11,18 +11,23 @@ import { compose } from '../utils/functional';
 
 import { Dispatch, Middleware } from '../types';
 
+// TODO: improve error handling
+
 export function registerMiddleware<M extends Middleware = Middleware>(...middlewares: M[]) {
-  if (isDispatching) throw new ImmduxInternalError('Registering middleware from reducer is forbidden.');
-  const calledByMiddlewareConstructor = isRegisteringMiddleware;
-  !calledByMiddlewareConstructor && setIsRegisteringMiddleware(true);
+  if (isDispatching || isRegisteringMiddleware)
+    throw new ImmduxInternalError('Failed to register middleware');
+  setIsRegisteringMiddleware(true);
   for (const middlewareConstructor of middlewares)
     middleware.set(middlewareConstructor, middlewareConstructor(store));
   setDispatchThroughMiddleware(<Dispatch<any>>compose(...middleware.values())(dispatchInternal));
-  !calledByMiddlewareConstructor && setIsRegisteringMiddleware(false);
+  setIsRegisteringMiddleware(false);
 }
 
 export function removeMiddleware<M extends Middleware = Middleware>(...middlewares: M[]) {
-  if (isDispatching) throw new ImmduxInternalError('Removing middleware from reducer is forbidden.');
+  if (isDispatching || isRegisteringMiddleware)
+    throw new ImmduxInternalError('Failed to remove middleware');
   for (const middlewareConstructor of middlewares) middleware.remove(middlewareConstructor);
+  setIsRegisteringMiddleware(true);
   setDispatchThroughMiddleware(<Dispatch<any>>compose(...middleware.values())(dispatchInternal));
+  setIsRegisteringMiddleware(false);
 }
