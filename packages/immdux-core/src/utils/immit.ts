@@ -32,7 +32,7 @@ export class Immit {
     this.prev = oldRoot;
     this.next = newRoot;
     if (!is(getIn(newRoot, path, NOT_SET), getIn(oldRoot, path, NOT_SET))) {
-      const listeners = path ? this.listeners.scope(path) : this.listeners;
+      const listeners = path.length ? this.listeners.scope(path) : this.listeners;
       for (const [_, cb] of listeners) cb();
     }
   };
@@ -77,7 +77,7 @@ export class Immit {
 
   // TODO: make key path types more specific and clearly documented
   public subscribe(
-    targetKeyPath: IterableKeyPath = [],
+    targetKeyPath: IterableKeyPath,
     fn: ImmitListener,
   ): () => { keyPath: IterableKeyPath; entries: ImmitListener[] } {
     // TODO: consider making path an optional arg

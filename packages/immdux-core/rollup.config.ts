@@ -52,6 +52,9 @@ export default {
       useTsconfigDeclarationDir: false,
       tsconfigOverride: {
         exclude: ['src/**/__tests__/*.test.ts'],
+        compilerOptions: {
+          target: 'es5',
+        }
       },
     }),
     // Uglify build output.

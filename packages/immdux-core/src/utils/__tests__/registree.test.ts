@@ -115,7 +115,7 @@ describe('RegisTree', () => {
     expect(result).toEqual(expected);
   });
 
-  it('supports skipping ancestor paths in scoped iteration when constructed w/ `skipPath()` prop', () => {
+  it('supports skipping paths in scoped iteration when constructed w/ `skipPath()` prop', () => {
     const registry = new RegisTree({
       skipPath(path) {
         return path[0] === 'hello' && path[1] === 0 && path[2] === 'world';
@@ -136,6 +136,30 @@ describe('RegisTree', () => {
       [[], 'root'],
     ];
     const result = [...registry.scope(['hello', 0])];
+    expect(result).toEqual(expected);
+  });
+
+  it('supports skipping at ancestor paths when constructed w/ `skipPath()` prop', () => {
+    const registry = new RegisTree({
+      skipPath(path) {
+        return path[0] === 'hello' && path[1] === 0; // && path[2] === 'world';
+      },
+    });
+    registry.register([], 'root');
+    registry.register(['hello'], 'hello');
+    registry.register(['hello', 0], 'hello[0]');
+    registry.register(['hello', 0, 'world'], 'hello[0].world');
+    registry.register(['hello', 0, 'world', 'peace'], 'hello[0].world.peace');
+    registry.register(['hello', 0, 'mars'], 'hello[0].mars');
+    registry.register(['hello', 0, 'mars', 'bars'], 'hello[0].mars.bars');
+    const expected = [
+      // [['hello', 0, 'mars', 'bars'], 'hello[0].mars.bars'],
+      // [['hello', 0, 'mars'], 'hello[0].mars'],
+      // [['hello', 0], 'hello[0]'],
+      [['hello'], 'hello'],
+      [[], 'root'],
+    ];
+    const result = [...registry.scope(['hello', 0, 'world'])];
     expect(result).toEqual(expected);
   });
 

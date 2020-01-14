@@ -151,7 +151,7 @@ export class RegisTree<T = any> {
       let registryNodeRef = get(registryRef, LISTENER_KEY, NOT_SET);
       while (keyQueueArr.length > 0) {
         if (registryNodeRef !== NOT_SET) {
-          // TODO: test else case
+          console.log(registryNodeRef[0]);
           if (skipPath && skipPath(registryNodeRef[0], registryNodeRef[1])) {
             // Early return skipping on ancestor path.
             ancestorArr.reverse();
@@ -173,9 +173,8 @@ export class RegisTree<T = any> {
       // Better performance to push then reverse instead of unshift.
       ancestorArr.reverse();
     }
-
+    // Iterate children depth first.
     const registryNodeArr = [];
-    // TODO: investigate performance of `.shift()` vs DIY linked list
     const registryQueue = [this.registry];
     while (registryQueue.length) {
       const registryNode = get(registryQueue[0], LISTENER_KEY, NOT_SET);

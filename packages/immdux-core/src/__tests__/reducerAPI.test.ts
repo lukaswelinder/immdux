@@ -92,6 +92,17 @@ describe('reducer API', () => {
       registerReducer(mockKeyPath, mockReducer);
       removeReducer(mockKeyPath);
     });
+
+    it('should throw an error if no reducers are provided', () => {
+      let didError = false;
+      try {
+        registerReducer(['r1']);
+      } catch (_) {
+        didError = true;
+      } finally {
+        expect(didError).toBe(true);
+      }
+    });
   });
   describe('removeReducer', () => {
     it('dispatches a `REMOVE_REDUCER` action before the reducer is removed from the registry', () => {

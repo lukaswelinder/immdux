@@ -143,6 +143,18 @@ describe('observable API', () => {
       s2.unsubscribe();
     });
 
+    it('will return observable at the same level using `.in()` with no arguments', () => {
+      setState(mockState1);
+      const state1$ = new StateObservable(['r1']);
+      const state2$ = state1$.in();
+      const s1 = state1$.subscribe();
+      const s2 = state2$.subscribe();
+      expect(is(state1$.value, mockState1.getIn(['r1']))).toBe(true);
+      expect(is(state2$.value, mockState1.getIn(['r1']))).toBe(true);
+      s1.unsubscribe();
+      s2.unsubscribe();
+    });
+
     it('emits an error if subscribed to while reducers are executing', () => {
       setState(mockState1);
       const myState$ = new StateObservable();
