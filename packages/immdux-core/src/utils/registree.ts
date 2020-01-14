@@ -151,7 +151,6 @@ export class RegisTree<T = any> {
       let registryNodeRef = get(registryRef, LISTENER_KEY, NOT_SET);
       while (keyQueueArr.length > 0) {
         if (registryNodeRef !== NOT_SET) {
-          console.log(registryNodeRef[0]);
           if (skipPath && skipPath(registryNodeRef[0], registryNodeRef[1])) {
             // Early return skipping on ancestor path.
             ancestorArr.reverse();
