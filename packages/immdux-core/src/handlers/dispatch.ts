@@ -1,5 +1,4 @@
 import { fromJS } from 'immutable';
-import { toKeyPathSeq } from '../utils/keypath';
 import { isDispatching, isRegisteringMiddleware, setIsDispatching, ImmduxInternalError } from '../reference/status';
 import { flushQueuedObservers } from './observables';
 import { reducers } from '../reference/reducers';

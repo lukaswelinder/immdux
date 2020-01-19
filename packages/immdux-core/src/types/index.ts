@@ -1,4 +1,4 @@
-import { Collection, Map, OrderedSet, Seq } from 'immutable';
+import { Collection, Map, OrderedSet } from 'immutable';
 import { Observable } from 'rxjs';
 
 import { StateObservable } from '../handlers/observables';
