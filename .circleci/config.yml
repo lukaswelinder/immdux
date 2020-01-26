@@ -1,33 +1,62 @@
 version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.5
+aliases:
+  - &docker:
+    - image: circleci/node
+  - &restore_yarn_cache:
+    restore_cache:
+      name: Restore Yarn Package Cache
+      keys:
+        - yarn-packages-{{ checksum "yarn.lock" }}
+  - &yarn_install:
+    run:
+      name: Install Dependencies
+      command: yarn install --frozen-lockfile
 jobs:
+  setup:
+    docker: *docker
+      steps:
+        - checkout
+        - *restore_yarn_cache
+        - *yarn_install
+        - save_cache:
+            name: Save Yarn Package Cache
+            key: yarn-packages-{{ checksum "yarn.lock" }}
+            paths:
+              - ~/.cache/yarn
+  test:
+    docker: *docker
+      steps:
+        - checkout
+        - *restore_yarn_cache
+        - *yarn_install
+        - run:
+            name: Run Tests
+            command: |
+              yarn test
+        - store_artifacts:
+            path: coverage
+        - codecov/upload:
+            file: ./coverage/lcov.info
   build:
-    docker:
-      - image: circleci/node
+    docker: *docker
     steps:
       - checkout
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install Dependencies
-          command: yarn install --frozen-lockfile
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-      - run:
-          name: Run Tests
-          command: |
-            yarn test
-      - store_artifacts:
-          path: coverage
-      - codecov/upload:
-          file: ./coverage/lcov.info
+      - *restore_yarn_cache
+      - *yarn_install
       - run:
           name: Run Build
           command: |
             yarn run build
+workflows:
+  version: 2.1
+  checks:
+    jobs:
+      - setup
+      - test:
+          requires:
+            - setup
+      - build:
+          requires:
+            - setup
