@@ -1,18 +1,23 @@
 version: 2.1
+
 orbs:
   codecov: codecov/codecov@1.0.5
+
 aliases:
-  - &docker:
+  - &docker
     - image: circleci/node
-  - &restore_yarn_cache:
+
+  - &restore_yarn_cache
     restore_cache:
       name: Restore Yarn Package Cache
       keys:
         - yarn-packages-{{ checksum "yarn.lock" }}
-  - &yarn_install:
+
+  - &yarn_install
     run:
       name: Install Dependencies
       command: yarn install --frozen-lockfile
+
 jobs:
   setup:
     docker: *docker
@@ -25,6 +30,7 @@ jobs:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+
   lint:
     docker: *docker
     steps:
@@ -35,6 +41,7 @@ jobs:
           name: Lint Code
           command: |
             yarn run lint
+
   test:
     docker: *docker
     steps:
@@ -49,6 +56,7 @@ jobs:
           path: coverage
       - codecov/upload:
           file: ./coverage/lcov.info
+
   build:
     docker: *docker
     steps:
@@ -59,6 +67,7 @@ jobs:
           name: Run Build
           command: |
             yarn run build
+
 workflows:
   version: 2.1
   checks:
