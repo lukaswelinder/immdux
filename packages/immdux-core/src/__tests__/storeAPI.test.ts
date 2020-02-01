@@ -1,13 +1,7 @@
 import { fromJS, is } from 'immutable';
 import { Observable, Subscription } from 'rxjs';
 
-import {
-  store,
-  setState,
-  dispatch,
-  registerReducer,
-  removeReducer,
-} from '../';
+import { store, setState, dispatch, registerReducer, removeReducer } from '../';
 
 const mockState1 = fromJS({
   r1: { testing: 'reducer1' },

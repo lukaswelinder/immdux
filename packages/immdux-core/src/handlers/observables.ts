@@ -102,9 +102,7 @@ export class ActionObservable<A extends AnyAction = AnyAction> extends Observabl
   constructor(...types: (string | RegExp)[]) {
     const observe = (observer: Observer<A>) => {
       if (isDispatching) {
-        throw new ImmduxInternalError(
-          'Subscribing while reducers are executing is forbidden.',
-        );
+        throw new ImmduxInternalError('Subscribing while reducers are executing is forbidden.');
       }
       actionObserverSet.add(observer);
       actionObserverArr = actionObserverSet.toArray();
@@ -137,9 +135,7 @@ export class StateObservable<S = any> extends Observable<S> {
     const keyPathSeq = toKeyPathSeq(targetKeyPath);
     const observe = (observer: Observer<any>) => {
       if (isDispatching) {
-        throw new ImmduxInternalError(
-          'Subscribing while reducers are executing is forbidden.',
-        );
+        throw new ImmduxInternalError('Subscribing while reducers are executing is forbidden.');
       }
       (this as any).value = getIn(struct.current, this.path, undefined);
       // Value reference for closure.
@@ -165,8 +161,7 @@ export class StateObservable<S = any> extends Observable<S> {
       // Return cleanup fn.
       return () => {
         // Remove from current place in queue.
-        if (isQueued)
-          queuedStateObservers[queueIndex] = null;
+        if (isQueued) queuedStateObservers[queueIndex] = null;
         // Unsubscribe from struct.
         unsubscribe();
       };
@@ -194,9 +189,7 @@ export class StateObservable<S = any> extends Observable<S> {
    * Concatenated onto existing path.
    */
   public in(targetKeyPath: IterableKeyPath = []) {
-    return new StateObservable(
-      this.path.concat(toKeyPathSeq(targetKeyPath).toArray()),
-    );
+    return new StateObservable(this.path.concat(toKeyPathSeq(targetKeyPath).toArray()));
   }
 }
 

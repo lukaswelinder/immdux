@@ -19,8 +19,8 @@ describe('reducer API', () => {
   describe('registerReducer', () => {
     it(
       'mounts `reducer` to correct `keyPath` in store' +
-      ' and initialize w/ `REGISTER_REDUCER` action containing' +
-      ' `keyPath` and `reducer` in the action payload',
+        ' and initialize w/ `REGISTER_REDUCER` action containing' +
+        ' `keyPath` and `reducer` in the action payload',
       () => {
         setState(mockState1);
         const mockKeyPath = ['r2', 'nested'];
@@ -59,7 +59,7 @@ describe('reducer API', () => {
     });
     it(
       'uses the default state for `reducer` if state is not already' +
-      ' defined at the given `keyPath`',
+        ' defined at the given `keyPath`',
       () => {
         setState(mockState1);
         const mockDefaultReducerState = fromJS({ example: 'testing' });

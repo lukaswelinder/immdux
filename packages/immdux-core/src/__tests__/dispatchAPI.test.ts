@@ -38,7 +38,7 @@ describe('dispatch API', () => {
 
     it('should throw an error if called while registering middleware', () => {
       const mockMiddleware = ((_) => (next) => {
-        dispatch({ type: 'SHOULD_FAIL'});
+        dispatch({ type: 'SHOULD_FAIL' });
         return (action) => {
           next(action);
         };

@@ -17,7 +17,6 @@ const mockState1 = fromJS({
   r2: { nested: { testing: 'reducer_nested' }, second: { testing: 2 } },
 });
 
-
 describe('observable API', () => {
   describe('ActionObservable', () => {
     it('supports filtering by one or more strings', () => {

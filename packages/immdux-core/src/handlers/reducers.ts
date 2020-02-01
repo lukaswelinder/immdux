@@ -16,7 +16,9 @@ export function registerReducer<S = any, A extends Action = AnyAction>(
   ...entries: Reducer<S, A>[]
 ): Action<typeof REGISTER_REDUCER> & { payload: { keyPath: any[]; entries: Reducer<S, A>[] } } {
   if (isDispatching)
-    throw new ImmduxInternalError('Registering/removing reducers while reducers are executing is forbidden.');
+    throw new ImmduxInternalError(
+      'Registering/removing reducers while reducers are executing is forbidden.',
+    );
   const { keyPath } = reducers.register(targetKeyPath, ...entries);
   reducers.cache();
   return dispatch({ type: REGISTER_REDUCER, payload: { keyPath, entries } });
@@ -30,7 +32,9 @@ export function removeReducer<S = any, A extends Action = AnyAction>(
   ...removals: Reducer<S, A>[]
 ): Action<typeof REMOVE_REDUCER> & { payload: { keyPath: any[]; entries: Reducer<S, A>[] } } {
   if (isDispatching)
-    throw new ImmduxInternalError('Registering/removing reducers while reducers are executing is forbidden.');
+    throw new ImmduxInternalError(
+      'Registering/removing reducers while reducers are executing is forbidden.',
+    );
   const { keyPath, entries } = reducers.remove(targetKeyPath, ...removals);
   const action = dispatch({ type: REMOVE_REDUCER, payload: { keyPath, entries } });
   reducers.cache();
