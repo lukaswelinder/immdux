@@ -14,6 +14,8 @@
     "build:docs": "lerna run --parallel build:docs",
     "test": "jest",
     "test:watch": "jest --watch",
+    "lint": "eslint --format codeframe --ignore-path ./.gitignore ./**/*.ts",
+    "lint:fix": "eslint --fix --format codeframe --ignore-path ./.gitignore ./**/*.ts",
     "precommit": "lint-staged",
     "postcommit": "git update-index -g",
     "commitmsg": "commitlint -E GIT_PARAMS"
@@ -23,11 +25,14 @@
     "@commitlint/config-conventional": "^7.1.2",
     "@types/jest": "^23.3.10",
     "@types/node": "^10.12.11",
-    "@typescript-eslint/eslint-plugin": "^2.6.1",
-    "@typescript-eslint/parser": "^2.6.1",
+    "@typescript-eslint/eslint-plugin": "^2.18.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^2.17.0",
+    "@typescript-eslint/parser": "^2.18.0",
     "casual": "^1.6.2",
     "cross-env": "^5.0.1",
-    "eslint": "^6.6.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "husky": "^0.14.0",
     "immutable": "^4.0.0-rc.12",
     "jest": "^24.9.0",
@@ -59,7 +64,7 @@
   },
   "lint-staged": {
     "./**/*.{js,jsx,ts,tsx,css,scss}": [
-      "prettier --write --ignore-path ./.gitignore",
+      "eslint --fix --format codeframe --ignore-path ./.gitignore ./**/*.ts",
       "git add"
     ]
   },
