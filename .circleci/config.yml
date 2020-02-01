@@ -25,6 +25,16 @@ jobs:
             key: yarn-packages-{{ checksum "yarn.lock" }}
             paths:
               - ~/.cache/yarn
+  lint:
+    docker: *docker
+      steps:
+        - checkout
+        - *restore_yarn_cache
+        - *yarn_install
+        - run:
+            name: Lint Code
+            command: |
+              yarn run lint
   test:
     docker: *docker
       steps:
@@ -54,6 +64,9 @@ workflows:
   checks:
     jobs:
       - setup
+      - lint:
+          requires:
+            - setup
       - test:
           requires:
             - setup
