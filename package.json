@@ -15,7 +15,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint --format codeframe --ignore-path ./.gitignore ./**/*.ts",
-    "lint:fix": "eslint --fix --format codeframe --ignore-path ./.gitignore ./**/*.ts"
+    "lint:fix": "eslint --fix --format codeframe --ignore-path ./.gitignore ./**/*.ts",
+    "postinstall": "node node_modules/husky/lib/installer/bin install"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
@@ -62,7 +63,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
